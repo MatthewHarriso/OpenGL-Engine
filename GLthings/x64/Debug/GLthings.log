@@ -1,0 +1,23 @@
+﻿  VertexLoader.cpp
+c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\vertexloader.h(3): fatal error C1083: Cannot open include file: 'gl_core_4_4.h': No such file or directory
+  tiny_obj_loader.cc
+  TextureManager.cpp
+  TextureLoader.cpp
+c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\textureloader.h(3): fatal error C1083: Cannot open include file: 'STB\stb_image.h': No such file or directory
+  ShaderManager.cpp
+  Renderer.cpp
+  Object.cpp
+c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\textureloader.h(3): fatal error C1083: Cannot open include file: 'STB\stb_image.h': No such file or directory
+  Entity.cpp
+c1xx : fatal error C1083: Cannot open source file: 'Entity.cpp': No such file or directory
+  main.cpp
+c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\main.cpp(4): fatal error C1083: Cannot open include file: 'Application.h': No such file or directory
+  FlyCamera.cpp
+c1xx : fatal error C1083: Cannot open source file: 'FlyCamera.cpp': No such file or directory
+  Camera.cpp
+c1xx : fatal error C1083: Cannot open source file: 'Camera.cpp': No such file or directory
+  Application.cpp
+c1xx : fatal error C1083: Cannot open source file: 'Application.cpp': No such file or directory
+  Gizmos.cpp
+c1xx : fatal error C1083: Cannot open source file: '..\include\AIE\Gizmos.cpp': No such file or directory
+  Generating Code...
