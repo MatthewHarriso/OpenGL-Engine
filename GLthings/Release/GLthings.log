@@ -1,0 +1,77 @@
+﻿  Object.cpp
+Object.cpp(42): error C2440: '=': cannot convert from 'std::vector<OpenGLInfo,std::allocator<_Ty>> *' to 'int'
+          with
+          [
+              _Ty=OpenGLInfo
+          ]
+  Object.cpp(42): note: There is no context in which this conversion is possible
+  Renderer.cpp
+Renderer.cpp(15): error C2065: 'timer': undeclared identifier
+Renderer.cpp(17): error C2065: 'm_programID': undeclared identifier
+Renderer.cpp(17): error C3861: 'glGetUniformLocation': identifier not found
+Renderer.cpp(18): error C2065: 'timer': undeclared identifier
+Renderer.cpp(18): error C3861: 'glUniform1f': identifier not found
+Renderer.cpp(20): error C2065: 'm_programID': undeclared identifier
+Renderer.cpp(20): error C3861: 'glGetUniformLocation': identifier not found
+Renderer.cpp(21): error C3861: 'glUniform1f': identifier not found
+Renderer.cpp(23): error C2065: 'm_programID': undeclared identifier
+Renderer.cpp(23): error C3861: 'glGetUniformLocation': identifier not found
+Renderer.cpp(24): error C2065: 'myCamera': undeclared identifier
+Renderer.cpp(24): error C2227: left of '->GetPosition' must point to class/struct/union/generic type
+  Renderer.cpp(24): note: type is 'unknown-type'
+Renderer.cpp(24): error C2228: left of '.x' must have class/struct/union
+Renderer.cpp(24): error C2228: left of '.y' must have class/struct/union
+Renderer.cpp(24): error C2228: left of '.z' must have class/struct/union
+Renderer.cpp(24): error C3861: 'glUniform3f': identifier not found
+Renderer.cpp(32): error C2065: 'm_programID': undeclared identifier
+Renderer.cpp(32): error C3861: 'glUseProgram': identifier not found
+Renderer.cpp(34): error C2065: 'm_programID': undeclared identifier
+Renderer.cpp(34): error C3861: 'glGetUniformLocation': identifier not found
+Renderer.cpp(35): error C2653: 'glm': is not a class or namespace name
+Renderer.cpp(35): error C2065: 'myCamera': undeclared identifier
+Renderer.cpp(35): error C2227: left of '->GetProjectionView' must point to class/struct/union/generic type
+  Renderer.cpp(35): note: type is 'unknown-type'
+Renderer.cpp(35): error C3861: 'value_ptr': identifier not found
+Renderer.cpp(35): error C3861: 'glUniformMatrix4fv': identifier not found
+Renderer.cpp(37): error C2065: 'm_programID': undeclared identifier
+Renderer.cpp(37): error C3861: 'glGetUniformLocation': identifier not found
+Renderer.cpp(38): error C3861: 'glUniform3f': identifier not found
+Renderer.cpp(39): error C2065: 'm_programID': undeclared identifier
+Renderer.cpp(39): error C3861: 'glGetUniformLocation': identifier not found
+Renderer.cpp(40): error C3861: 'glUniform3f': identifier not found
+Renderer.cpp(41): error C2065: 'm_programID': undeclared identifier
+Renderer.cpp(41): error C3861: 'glGetUniformLocation': identifier not found
+Renderer.cpp(42): error C3861: 'glUniform1f': identifier not found
+Renderer.cpp(44): error C2065: 'm_VAO': undeclared identifier
+Renderer.cpp(44): error C3861: 'glBindVertexArray': identifier not found
+Renderer.cpp(46): error C2065: 'GL_TRIANGLES': undeclared identifier
+Renderer.cpp(46): error C2065: 'indexCount': undeclared identifier
+Renderer.cpp(46): error C2065: 'GL_UNSIGNED_INT': undeclared identifier
+Renderer.cpp(46): error C3861: 'glDrawElements': identifier not found
+Renderer.cpp(48): error C2065: 'm_glInfo': undeclared identifier
+Renderer.cpp(49): error C3861: '<begin>': identifier not found
+Renderer.cpp(49): error C3312: no callable 'begin' function found for type 'unknown-type'
+Renderer.cpp(49): error C3861: '<end>': identifier not found
+Renderer.cpp(49): error C3312: no callable 'end' function found for type 'unknown-type'
+Renderer.cpp(50): error C2065: 'gl': undeclared identifier
+Renderer.cpp(50): error C2228: left of '.m_VAO' must have class/struct/union
+  Renderer.cpp(50): note: type is 'unknown-type'
+Renderer.cpp(50): error C3861: 'glBindVertexArray': identifier not found
+Renderer.cpp(51): error C2065: 'GL_TRIANGLES': undeclared identifier
+Renderer.cpp(51): error C2065: 'gl': undeclared identifier
+Renderer.cpp(51): error C2228: left of '.m_faceCount' must have class/struct/union
+  Renderer.cpp(51): note: type is 'unknown-type'
+Renderer.cpp(51): error C3861: 'glDrawArrays': identifier not found
+  VertexLoader.cpp
+VertexLoader.cpp(291): error C3867: 'std::map<char *,std::vector<OpenGLInfo,std::allocator<_Ty>> *,std::less<_Kty>,std::allocator<std::pair<const _Kty,std::vector<_Ty,std::allocator<_Ty>>>>>::at': non-standard syntax; use '&' to create a pointer to member
+          with
+          [
+              _Ty=OpenGLInfo,
+              _Kty=char *
+          ]
+VertexLoader.cpp(291): error C2440: '=': cannot convert from 'std::vector<OpenGLInfo,std::allocator<_Ty>> *' to 'const char'
+          with
+          [
+              _Ty=OpenGLInfo
+          ]
+  VertexLoader.cpp(291): note: There is no context in which this conversion is possible
