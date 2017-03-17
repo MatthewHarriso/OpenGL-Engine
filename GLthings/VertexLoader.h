@@ -2,6 +2,9 @@
 
 #include <gl_core_4_4.h>
 #include "tiny_obj_loader.h"
+#include <vector>
+#include <map>
+#include <string>
 
 struct OpenGLInfo
 {
@@ -45,7 +48,7 @@ private:
 
 	static VertexLoader* instance;
 
-	std::map<char*, std::vector<OpenGLInfo>*> models;
+	std::map<const std::string, std::vector<OpenGLInfo>*> models;
 
 	FlyCamera* myCamera;
 

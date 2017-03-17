@@ -12,7 +12,8 @@ class ShaderManager
 {
 public:
 
-	ShaderManager();
+	static ShaderManager* GetInstance();
+	
 	~ShaderManager();
 
 	void Create();
@@ -21,9 +22,15 @@ public:
 
 	void LoadShaders();
 
+	//std::streampos fileSize(const char * filePath);
+
 private:
 
-	std::vector<char*> shaders;
+	ShaderManager();
+
+	static ShaderManager* instance;
+
+	std::vector<std::string> shaders;
 
 	int shader_Counter;
 
@@ -31,4 +38,3 @@ private:
 
 	unsigned int programID;
 };
-

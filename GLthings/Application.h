@@ -7,8 +7,12 @@
 #include "TextureLoader.h"
 #include "VertexLoader.h"
 
+#define OBJECT_LIMIT 50
+
 struct GLFWwindow;
 
+class ShaderManager;
+class Object;
 class FlyCamera;
 class Entity;
 
@@ -34,11 +38,11 @@ private:
 
 	FlyCamera* myCamera;
 
-	Entity* sun;
-	Entity* sunMoon;
-	Entity* earth;
-	Entity* earthMoon;
-	Entity* sunMoonMoon;
+	Object* gameObjects[OBJECT_LIMIT];
+
+	unsigned int objectCounter;
+
+	ShaderManager* shaderManager;
 
 	TextureLoader* textureLoader;
 

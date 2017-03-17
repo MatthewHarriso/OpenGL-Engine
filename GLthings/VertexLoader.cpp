@@ -103,6 +103,8 @@ VertexLoader::VertexLoader()
 	
 	glDeleteShader(fragmentShader); 
 	glDeleteShader(vertexShader);
+
+	models.clear();
 }
 
 VertexLoader* VertexLoader::GetInstance()
@@ -271,9 +273,10 @@ void VertexLoader::GenerateGrid(unsigned int rows, unsigned int cols)
 
 std::vector<OpenGLInfo>* VertexLoader::LoadGeometry(const char * l_textureFileName)
 {
-	for (std::map<char*, std::vector<OpenGLInfo>*>::iterator it = models.begin(); it != models.end(); it++)
+	const std::string name = l_textureFileName;
+	for (std::map<const std::string, std::vector<OpenGLInfo>*>::iterator it = models.begin(); it != models.end(); it++)
 	{
-		if (it->first == l_textureFileName)
+		if (it->first == name)
 		{
 			return it->second;
 		}
@@ -287,8 +290,10 @@ std::vector<OpenGLInfo>* VertexLoader::LoadGeometry(const char * l_textureFileNa
 	std::string err;
 
 	bool success = tinyobj::LoadObj(&attribs, &shapes, &materials, &err, l_textureFileName);
-	
-	models.at[l_textureFileName] = CreateOpenGLBuffers(attribs, shapes);
+
+	models.insert(std::map<const std::string, std::vector<OpenGLInfo>*>::value_type(name, CreateOpenGLBuffers(attribs, shapes)));
+
+	return (*models.find(name)).second;
 }
 
 void VertexLoader::Update(float l_deltaTime)

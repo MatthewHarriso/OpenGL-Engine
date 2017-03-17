@@ -2,7 +2,8 @@
 #include <stdio.h>
 
 #include "FlyCamera.h"
-#include "Entity.h"
+#include "Object.h"
+#include "ShaderManager.h"
 
 #include <iostream>
 
@@ -29,11 +30,19 @@ void Application::Shutdown()
 	
 	delete vertexLoader;
 
-	delete sun;
+	for (int i = 0; i < OBJECT_LIMIT; i++)
+	{
+		if (gameObjects[i] != nullptr)
+		{
+			delete gameObjects[i];
+		}
+	}
+
+	/*delete sun;
 	delete sunMoon;
 	delete earth;
 	delete earthMoon;
-	delete sunMoonMoon;
+	delete sunMoonMoon;*/
 
 	Gizmos::destroy();
 
@@ -97,15 +106,35 @@ bool Application::Startup()
 
 	view = glm::lookAt(glm::vec3(20, 20, 20), glm::vec3(0), glm::vec3(0, 1, 0));
 	projection = glm::perspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.0f);
+	
+	auto major = ogl_GetMajorVersion();
+	auto minor = ogl_GetMinorVersion();
 
-	sun = new Entity();
+	//				|
+	//	Objects		|
+	//				v
+
+	objectCounter = 0;
+
+	for (int i = 0; i < OBJECT_LIMIT; i++)
+	{
+		gameObjects[i] = new Object();
+		gameObjects[i]->Startup();
+	}
+
+	gameObjects[objectCounter]->SetMesh("Bunny.obj");
+	
+	objectCounter++;
+
+	//				^
+	//	Objects		|
+	//				|
+
+	/*sun = new Entity();
 	sunMoon = new Entity();
 	earth = new Entity();
 	earthMoon = new Entity();
 	sunMoonMoon = new Entity();
-
-	auto major = ogl_GetMajorVersion();
-	auto minor = ogl_GetMinorVersion();
 
 	Gizmos::create();
 
@@ -173,6 +202,8 @@ bool Application::Startup()
 	//	Entities Setup	|
 	//					|
 
+	*/
+
 	glfwSwapInterval(0);
 	
 	previousTime = 0;
@@ -184,6 +215,11 @@ bool Application::Startup()
 	splitScreenOrientation = 1;
 
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
+
+	//	Shader Manager
+	shaderManager = ShaderManager::GetInstance();
+
+	shaderManager->LoadShaders();
 
 	//	Texture Renderer.
 	textureLoader = TextureLoader::GetInstance();
@@ -233,8 +269,7 @@ bool Application::Update()
 		//Game Logic and update code here.
 		//Also our render code.
 
-		myCamera->Update(deltaTime);
-
+		/*
 		sun->Update(deltaTime);
 
 		sunMoon->Update(deltaTime);
@@ -244,6 +279,15 @@ bool Application::Update()
 		earthMoon->Update(deltaTime);
 
 		sunMoonMoon->Update(deltaTime);
+		
+		*/
+
+		myCamera->Update(deltaTime);
+		
+		for (int i = 0; i < objectCounter; i++)
+		{
+			gameObjects[i]->Update(deltaTime);
+		}
 
 		textureLoader->Update(currentTime);
 
@@ -262,15 +306,21 @@ void Application::Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Gizmos::draw(myCamera2->GetProjectionView());
-	Gizmos::clear();
+	//Gizmos::clear();
 
 	//	Texture Renderer.
-	textureLoader->Draw();
+	//textureLoader->Draw();
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+	for (int i = 0; i < objectCounter; i++)
+	{
+		gameObjects[i]->Draw();
+	}
+
 	vertexLoader->Draw();
 
+	/*
 	Gizmos::addTransform(glm::mat4(1));
 
 	Gizmos::addSphere(sun->GetPosition(), sun->GetSize(), sun->GetRows(), sun->GetColumns(), sun->GetColour(), &sun->GetMatrix());
@@ -278,6 +328,7 @@ void Application::Draw()
 	Gizmos::addSphere(earth->GetPosition(), earth->GetSize(), earth->GetRows(), earth->GetColumns(), earth->GetColour(), &earth->GetMatrix());
 	Gizmos::addSphere(earthMoon->GetPosition(), earthMoon->GetSize(), earthMoon->GetRows(), earthMoon->GetColumns(), earthMoon->GetColour(), &earthMoon->GetMatrix());
 	Gizmos::addSphere(sunMoonMoon->GetPosition(), sunMoonMoon->GetSize(), sunMoonMoon->GetRows(), sunMoonMoon->GetColumns(), sunMoonMoon->GetColour(), &sunMoonMoon->GetMatrix());
+	*/
 
 	glm::vec4 white(0);
 	glm::vec4 black(1, 0, 1, 1);

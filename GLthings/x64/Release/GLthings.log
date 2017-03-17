@@ -1,0 +1,33 @@
+﻿  Gizmos.cpp
+  Application.cpp
+  Camera.cpp
+  FlyCamera.cpp
+  main.cpp
+  Entity.cpp
+  Object.cpp
+  Renderer.cpp
+  ShaderManager.cpp
+  TextureLoader.cpp
+TextureLoader.cpp(142): warning C4244: 'initializing': conversion from 'GLint' to 'float', possible loss of data
+TextureLoader.cpp(143): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
+  TextureManager.cpp
+  tiny_obj_loader.cc
+  VertexLoader.cpp
+VertexLoader.cpp(141): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+  gl_core_4_4.c
+Application.obj : error LNK2001: unresolved external symbol glfwSwapBuffers
+Application.obj : error LNK2001: unresolved external symbol glfwSwapInterval
+Application.obj : error LNK2001: unresolved external symbol glfwGetTime
+Application.obj : error LNK2001: unresolved external symbol glfwGetKey
+Application.obj : error LNK2001: unresolved external symbol glfwTerminate
+Application.obj : error LNK2001: unresolved external symbol glfwPollEvents
+Application.obj : error LNK2001: unresolved external symbol glfwInit
+Application.obj : error LNK2001: unresolved external symbol glfwCreateWindow
+Application.obj : error LNK2001: unresolved external symbol glfwMakeContextCurrent
+Application.obj : error LNK2001: unresolved external symbol glfwDestroyWindow
+Application.obj : error LNK2001: unresolved external symbol glfwWindowShouldClose
+FlyCamera.obj : error LNK2001: unresolved external symbol glfwGetMouseButton
+FlyCamera.obj : error LNK2001: unresolved external symbol glfwSetInputMode
+FlyCamera.obj : error LNK2001: unresolved external symbol glfwSetCursorPos
+FlyCamera.obj : error LNK2001: unresolved external symbol glfwGetCursorPos
+C:\Users\s171461\Documents\Visual Studio 2015\Projects\GLthings\x64\Release\GLthings.exe : fatal error LNK1120: 15 unresolved externals
