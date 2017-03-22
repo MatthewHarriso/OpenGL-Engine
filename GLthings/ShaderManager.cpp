@@ -45,7 +45,6 @@ void ShaderManager::LoadShaders()
 
 	file.open("Shaders/Shader_Default.txt");
 
-
 	if (file.is_open())
 	{
 		std::getline(file, c);

@@ -18,6 +18,9 @@ public:
 	void SetTexture (char* l_Texture);
 	void SetMesh (char* l_Mesh);
 	void SetParent (Object* l_Parent);
+	void SetRenderIndex (unsigned int l_index);
+
+	unsigned int GetRenderIndex ();
 
 	void Update (float DeltaTime);
 
@@ -28,6 +31,8 @@ public:
 private:
 
 	Object* Parent;
+
+	unsigned int renderIndex;
 
 	std::vector<OpenGLInfo>* _Mesh;
 	int _Shader;

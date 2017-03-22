@@ -1,9 +1,7 @@
-﻿  Application.cpp
-Application.cpp(287): warning C4018: '<': signed/unsigned mismatch
-Application.cpp(316): warning C4018: '<': signed/unsigned mismatch
-  ShaderManager.cpp
-  gl_core_4_4.c
+﻿  ShaderManager.cpp
   Generating code
-  All 2197 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  1 of 2197 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   GLthings.vcxproj -> C:\Users\s171461\documents\visual studio 2015\Projects\GLthings\Release\GLthings.exe

@@ -1,8 +1,11 @@
 #include "Renderer.h"
+#include "ShaderManager.h"
+#include "TextureLoader.h"
+#include "Object.h"
 
 Renderer::Renderer()
 {
-
+	bufferIndex = 0;
 }
 
 Renderer::~Renderer()
@@ -10,9 +13,21 @@ Renderer::~Renderer()
 
 }
 
+void Renderer::AddToQueue(Object* l_newObject)
+{
+	models.insert(std::map<unsigned int, Object*>::value_type(bufferIndex, l_newObject));
+	l_newObject->SetRenderIndex(bufferIndex);
+	bufferIndex++;
+}
+
+void Renderer::RemoveFromQueue(Object* l_Object)
+{
+	models.erase(models.find(l_Object->GetRenderIndex()));
+	bufferIndex--;
+}
+
 void Renderer::Update(float l_deltaTime)
 {
-	/*
 	timer += l_deltaTime;
 
 	unsigned int location = glGetUniformLocation(m_programID, "time");
@@ -24,13 +39,13 @@ void Renderer::Update(float l_deltaTime)
 	location = glGetUniformLocation(m_programID, "CameraPos");
 	glUniform3f(location, myCamera->GetPosition().x, myCamera->GetPosition().y, myCamera->GetPosition().z);
 
-	/*location = glGetUniformLocation(m_programID, "lightType");
-	glUniform1i(location, eLight);*/
+	location = glGetUniformLocation(m_programID, "lightType");
+	glUniform1i(location, eLight);
 }
 
 void Renderer::Draw()
 {
-	/*
+	
 	glUseProgram(m_programID);
 
 	unsigned int location = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
@@ -52,5 +67,5 @@ void Renderer::Draw()
 		glBindVertexArray(gl.m_VAO);
 		glDrawArrays(GL_TRIANGLES, 0, gl.m_faceCount * 3);
 	}
-	*/
+	
 }

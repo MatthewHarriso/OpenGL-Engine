@@ -4,7 +4,7 @@
 
 Object::Object()
 {
-	
+	Startup();
 }
 
 Object::~Object()
@@ -14,6 +14,8 @@ Object::~Object()
 
 void Object::Startup()
 {
+	renderIndex = 0;
+
 	vertexLoader = VertexLoader::GetInstance();
 	textureLoader = TextureLoader::GetInstance();
 
@@ -42,9 +44,19 @@ void Object::SetMesh(char * l_Mesh)
 	_Mesh = vertexLoader->LoadGeometry(l_Mesh);
 }
 
-void Object::SetParent(Object * l_Parent)
+void Object::SetParent(Object * l_parent)
 {
+	Parent = l_parent;
+}
 
+void Object::SetRenderIndex(unsigned int l_index)
+{
+	renderIndex = l_index;
+}
+
+unsigned int Object::GetRenderIndex()
+{
+	return renderIndex;
 }
 
 void Object::Update(float DeltaTime)
