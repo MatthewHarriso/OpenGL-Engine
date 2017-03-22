@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-struct OpenGLInfo;
+#include "Structures.h"
 
 class VertexLoader;
 class TextureLoader;

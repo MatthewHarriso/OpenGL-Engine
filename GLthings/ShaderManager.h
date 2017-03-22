@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <iostream>
 
 enum ShaderType
 {
@@ -7,6 +8,8 @@ enum ShaderType
 	ShaderType_LIGHTING,
 	ShaderType_LENGTH
 };
+
+class FlyCamera;
 
 class ShaderManager
 {
@@ -20,9 +23,13 @@ public:
 
 	void ShutDown();
 
+	void SetCamera(FlyCamera* l_camera);
+
 	void LoadShaders();
 
-	//std::streampos fileSize(const char * filePath);
+	void LoadFromFile();
+
+	void Update(float l_deltaTime);
 
 private:
 
@@ -31,6 +38,12 @@ private:
 	static ShaderManager* instance;
 
 	std::vector<std::string> shaders;
+
+	FlyCamera* myCamera;
+
+	float timer;
+
+	int eLight;
 
 	int shader_Counter;
 

@@ -1,24 +1,12 @@
 #pragma once
 
+#include "Structures.h"
+
 #include <gl_core_4_4.h>
 #include "tiny_obj_loader.h"
 #include <vector>
 #include <map>
 #include <string>
-
-struct OpenGLInfo
-{
-	unsigned int m_VAO;
-	unsigned int m_VBO;
-	unsigned int m_faceCount;
-};
-
-struct OBJVertex
-{
-	float x, y, z;
-	float nx, ny, nz;
-	float u, v;
-};
 
 class FlyCamera;
 
