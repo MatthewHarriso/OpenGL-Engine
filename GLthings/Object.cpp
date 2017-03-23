@@ -54,9 +54,20 @@ void Object::SetRenderIndex(unsigned int l_index)
 	renderIndex = l_index;
 }
 
+void Object::SetShader(unsigned int l_shader)
+{
+	std::vector<OpenGLInfo>::iterator it = _Mesh->begin();
+	(*it).m_ProgramID = l_shader;
+}
+
 unsigned int Object::GetRenderIndex()
 {
 	return renderIndex;
+}
+
+std::vector<OpenGLInfo>* Object::GetOpenGLInfo()
+{
+	return _Mesh;
 }
 
 void Object::Update(float DeltaTime)

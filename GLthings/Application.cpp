@@ -1,9 +1,11 @@
 #include "Application.h"
-#include <stdio.h>
 
 #include "FlyCamera.h"
 #include "Object.h"
 #include "ShaderManager.h"
+#include "Renderer.h"
+
+#include <stdio.h>
 
 #include <iostream>
 
@@ -122,8 +124,9 @@ bool Application::Startup()
 		gameObjects[i]->Startup();
 	}
 
-	gameObjects[objectCounter]->SetMesh("Bunny.obj");
-	
+	gameObjects[objectCounter]->SetMesh("models/Bunny.obj");
+	gameObjects[objectCounter]->SetShader(ShaderType::ShaderType_DEFAULT);
+
 	objectCounter++;
 
 	//				^
@@ -219,6 +222,8 @@ bool Application::Startup()
 	//	Shader Manager
 	shaderManager = ShaderManager::GetInstance();
 
+	shaderManager->LoadFromFile();
+
 	shaderManager->LoadShaders();
 
 	//	Texture Renderer.
@@ -241,6 +246,14 @@ bool Application::Startup()
 	vertexLoader->GenerateGrid(100, 100);
 
 	//	Vertex Renderer.
+
+	//	Renderer.
+
+	renderer = Renderer::GetInstance();
+
+	renderer->AddToQueue(gameObjects[0]);
+
+	//	Renderer.
 
 	return true;
 }
@@ -282,9 +295,11 @@ bool Application::Update()
 		
 		*/
 
+		renderer->Update(deltaTime);
+
 		myCamera->Update(deltaTime);
 		
-		for (int i = 0; i < objectCounter; i++)
+		for (unsigned int i = 0; i < objectCounter; i++)
 		{
 			gameObjects[i]->Update(deltaTime);
 		}
@@ -313,7 +328,9 @@ void Application::Draw()
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	for (int i = 0; i < objectCounter; i++)
+	renderer->Draw();
+
+	for (unsigned int i = 0; i < objectCounter; i++)
 	{
 		gameObjects[i]->Draw();
 	}

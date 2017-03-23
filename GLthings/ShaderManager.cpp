@@ -4,8 +4,6 @@
 #include <fstream>
 #include <sstream>
 
-#include <gl_core_4_4.h>
-
 ShaderManager* ShaderManager::instance = nullptr;
 
 ShaderManager::ShaderManager()
@@ -30,9 +28,14 @@ ShaderManager::~ShaderManager()
 
 void ShaderManager::Create()
 {
+	for (int i = 0; i < ShaderType::ShaderType_LENGTH; i++)
+	{
+		programIDs[i] = 0;
+	}
+	
 	shader_Counter = 0;
 
-	programID = 0;
+	m_programID = 0;
 }
 
 void ShaderManager::ShutDown()
@@ -51,65 +54,53 @@ void ShaderManager::LoadShaders()
 
 	timer = 0;
 
-	const char* vsSource = "#version 410\n \
-							layout(location=0) in vec4 position; \
-							layout(location=1) in vec4 normal; \
-							layout(location=2) in vec4 colour; \
-							out vec4 vColour; \
-							out vec4 vNormal; \
-							out vec4 vPosition; \
-							uniform mat4 projectionViewWorldMatrix; \
-							uniform float time; \
-							uniform float heightScale; \
-							void main() \
-							{ \
-								vPosition = position; \
-								vColour = vec4(78/255.0f, 46 / 255.0f, 40 / 255.0f, 1); \
-								vec4 P = position; \
-								P.y += sin((time * 10) + (-position.x * 0.125f)) * 4; \
-								P.y += (heightScale + (position.x * 0.25f) * 0.75f) * cos(time * 2); \
-								P.y += sin((time * 7.5f) + (abs(position.x * 0.05f))) * (cos(time * 2) * 2); \
-								vNormal = normal; \
-								gl_Position = projectionViewWorldMatrix * P;}";
+	std::vector<std::string>::iterator v_it = vShaders.begin();
+	std::vector<std::string>::iterator f_it = fShaders.begin();
 
-	//vColour.b = -P.y; \
-								//
-//	This makes the image wave like an ocean/flag.
-//
-
-	const char* fsSource = shaders.begin;
-
-	int success = GL_FALSE;
-
-	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	glShaderSource(vertexShader, 1, (const char**)&vsSource, 0);
-	glCompileShader(vertexShader);
-	glShaderSource(fragmentShader, 1, (const char**)&fsSource, 0);
-	glCompileShader(fragmentShader);
-
-	m_programID = glCreateProgram();
-
-	glAttachShader(m_programID, vertexShader);
-	glAttachShader(m_programID, fragmentShader);
-	glLinkProgram(m_programID);
-
-	glGetProgramiv(m_programID, GL_LINK_STATUS, &success);
-	char* infoLog;
-	if (success == GL_FALSE)
+	for (std::vector<std::string>::iterator it = vShaders.begin(); it != vShaders.end(); it++)
 	{
-		int infoLogLength = 0;
+		const char* vsSource = (*v_it).data();
 
-		glGetProgramiv(m_programID, GL_INFO_LOG_LENGTH, &infoLogLength);
+		const char* fsSource = (*f_it).data();
 
-		infoLog = new char[infoLogLength];
+		int success = GL_FALSE;
 
-		glGetProgramInfoLog(m_programID, infoLogLength, 0, infoLog);
+		unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+		glShaderSource(vertexShader, 1, (const char**)&vsSource, 0);
+		glCompileShader(vertexShader);
+		glShaderSource(fragmentShader, 1, (const char**)&fsSource, 0);
+		glCompileShader(fragmentShader);
+
+		m_programID = glCreateProgram();
+
+		glAttachShader(m_programID, vertexShader);
+		glAttachShader(m_programID, fragmentShader);
+		glLinkProgram(m_programID);
+
+		glGetProgramiv(m_programID, GL_LINK_STATUS, &success);
+		char* infoLog;
+		if (success == GL_FALSE)
+		{
+			int infoLogLength = 0;
+
+			glGetProgramiv(m_programID, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+			infoLog = new char[infoLogLength];
+
+			glGetProgramInfoLog(m_programID, infoLogLength, 0, infoLog);
+		}
+
+		programIDs[shader_Counter] = m_programID;
+		shader_Counter++;
+
+		glDeleteShader(fragmentShader);
+		glDeleteShader(vertexShader);
+
+		v_it++;
+		f_it++;
 	}
-
-	glDeleteShader(fragmentShader);
-	glDeleteShader(vertexShader);
 }
 
 void ShaderManager::LoadFromFile()
@@ -118,7 +109,7 @@ void ShaderManager::LoadFromFile()
 
 	std::string text, c;
 
-	file.open("Shaders/Shader_Default.txt");
+	file.open("Shaders/VShader_Default.txt");
 
 	if (file.is_open())
 	{
@@ -130,9 +121,24 @@ void ShaderManager::LoadFromFile()
 			text += c;
 		}
 
-		shaders.push_back(text);
-		
-		shader_Counter++;
+		vShaders.push_back(text);
+	}
+
+	file.close();
+
+	file.open("Shaders/FShader_Default.txt");
+
+	if (file.is_open())
+	{
+		std::getline(file, c);
+		text += c + "\n";
+
+		while (std::getline(file, c))
+		{
+			text += c;
+		}
+
+		fShaders.push_back(text);
 	}
 
 	file.close();
@@ -140,43 +146,50 @@ void ShaderManager::LoadFromFile()
 
 void ShaderManager::Update(float l_deltaTime)
 {
-	timer += l_deltaTime;
-
+	timer += l_deltaTime; 
+	
 	unsigned int location = glGetUniformLocation(m_programID, "time");
 	glUniform1f(location, timer);
 
 	location = glGetUniformLocation(m_programID, "heightScale");
 	glUniform1f(location, l_deltaTime);
+}
 
-	location = glGetUniformLocation(m_programID, "CameraPos");
-	glUniform3f(location, myCamera->GetPosition().x, myCamera->GetPosition().y, myCamera->GetPosition().z);
+void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo)
+{
+	std::vector<OpenGLInfo>::iterator it = l_vecOpenGLInfo->begin();
 
-	location = glGetUniformLocation(m_programID, "lightType");
-	glUniform1i(location, eLight);
+	OpenGLInfo l_openGLInfo = *it;
 
-	//					|
-	//	Draw Function	|
-	//					V
+	glUseProgram(l_openGLInfo.m_ProgramID);
 
-	glUseProgram(m_programID);
-
-	unsigned int location = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
+	unsigned int location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "projectionViewWorldMatrix");
 	glUniformMatrix4fv(location, 1, false, glm::value_ptr(myCamera->GetProjectionView()));
 
-	location = glGetUniformLocation(m_programID, "LightDir");
+	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "LightDir");
 	glUniform3f(location, 0.707, 0.707, 0.0);
-	location = glGetUniformLocation(m_programID, "LightColour");
+
+	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "LightColour");
 	glUniform3f(location, 1, 1, 1);
-	location = glGetUniformLocation(m_programID, "SpecPow");
+
+	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "SpecPow");
 	glUniform1f(location, 100.0);
 
-	glBindVertexArray(m_VAO);
+	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "CameraPos");
+	glUniform3f(location, myCamera->GetPosition().x, myCamera->GetPosition().y, myCamera->GetPosition().z);
 
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "lightType");
+	glUniform1i(location, eLight);
 
-	for (auto& gl : m_glInfo)
+	/*
+	glBindVertexArray(l_openGLInfo.m_VAO);
+
+	glDrawElements(GL_TRIANGLES, l_openGLInfo.m_faceCount, GL_UNSIGNED_INT, 0);
+	*/
+
+	for ( ; it != l_vecOpenGLInfo->end(); it++)
 	{
-		glBindVertexArray(gl.m_VAO);
-		glDrawArrays(GL_TRIANGLES, 0, gl.m_faceCount * 3);
+		glBindVertexArray((*it).m_VAO);
+		glDrawArrays(GL_TRIANGLES, 0, (*it).m_faceCount * 3);
 	}
 }

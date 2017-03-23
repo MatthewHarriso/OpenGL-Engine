@@ -180,6 +180,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="Structures.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="tiny_obj_loader.h" />

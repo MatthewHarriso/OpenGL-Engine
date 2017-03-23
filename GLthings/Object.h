@@ -19,8 +19,11 @@ public:
 	void SetMesh (char* l_Mesh);
 	void SetParent (Object* l_Parent);
 	void SetRenderIndex (unsigned int l_index);
+	void SetShader(unsigned int l_shader);
 
 	unsigned int GetRenderIndex ();
+
+	std::vector<OpenGLInfo>* GetOpenGLInfo();
 
 	void Update (float DeltaTime);
 
@@ -35,8 +38,8 @@ private:
 	unsigned int renderIndex;
 
 	std::vector<OpenGLInfo>* _Mesh;
-	int _Shader;
-	int _Texture;
+	unsigned int _Shader;
+	unsigned int _Texture;
 
 	TextureLoader* textureLoader;
 

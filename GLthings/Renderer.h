@@ -10,7 +10,8 @@ class Renderer
 {
 public:
 
-	Renderer ();
+	static Renderer* GetInstance();
+	
 	~Renderer ();
 
 	void AddToQueue (Object* l_newObject);
@@ -22,6 +23,10 @@ public:
 	void Draw ();
 
 private:
+	
+	Renderer ();
+
+	static Renderer* instance;
 
 	ShaderManager* shaderManager;
 	TextureManager* textureManager;

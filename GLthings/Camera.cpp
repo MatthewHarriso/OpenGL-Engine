@@ -57,7 +57,7 @@ void Camera::SetPosition(glm::vec3 l_position)
 void Camera::SetScreen(GLFWwindow * l_window)
 {
 	window = l_window;
-}	//I am Matt and I am a poopy butt hole
+}
 
 
 glm::vec3 Camera::GetPosition()
@@ -65,7 +65,6 @@ glm::vec3 Camera::GetPosition()
 	//return glm::vec3(worldTransform[3][0], worldTransform[3][1], worldTransform[3][2]);
 	return glm::vec3(worldTransform[3]);
 }
-//I am Matt and I am a poopy butt hole
 
 glm::mat4 Camera::GetWorldTransform()
 {
@@ -76,7 +75,6 @@ glm::mat4 Camera::GetView()
 {
 	return viewTransform;
 }
-//I am Matt and I am a poopy butt hole
 
 glm::mat4 Camera::GetProjection()
 {

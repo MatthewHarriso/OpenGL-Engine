@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Structures.h"
-
 #include <gl_core_4_4.h>
 #include "tiny_obj_loader.h"
 #include <vector>

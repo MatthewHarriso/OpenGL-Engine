@@ -2,6 +2,9 @@
 #include "ShaderManager.h"
 #include "TextureLoader.h"
 #include "Object.h"
+#include "Structures.h"
+
+Renderer* Renderer::instance = nullptr;
 
 Renderer::Renderer()
 {
@@ -9,12 +12,22 @@ Renderer::Renderer()
 
 	shaderManager = ShaderManager::GetInstance();
 
-	textureManager = TextureManager::GetInstance();
+	//textureManager = TextureManager::GetInstance();
 }
 
 Renderer::~Renderer()
 {
 
+}
+
+Renderer* Renderer::GetInstance()
+{
+	if (instance == nullptr)
+	{
+		instance = new Renderer();
+	}
+
+	return instance;
 }
 
 void Renderer::AddToQueue(Object* l_newObject)
@@ -37,5 +50,5 @@ void Renderer::Update(float l_deltaTime)
 
 void Renderer::Draw()
 {
-
+	shaderManager->Draw((*models.find(0)).second->GetOpenGLInfo());
 }

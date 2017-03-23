@@ -11,6 +11,7 @@
 
 struct GLFWwindow;
 
+class Renderer;
 class ShaderManager;
 class Object;
 class FlyCamera;
@@ -41,6 +42,8 @@ private:
 	Object* gameObjects[OBJECT_LIMIT];
 
 	unsigned int objectCounter;
+
+	Renderer* renderer;
 
 	ShaderManager* shaderManager;
 

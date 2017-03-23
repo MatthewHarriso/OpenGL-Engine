@@ -1,11 +1,13 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include "Structures.h"
+#include <gl_core_4_4.h>
 
 enum ShaderType
 {
 	ShaderType_DEFAULT,
-	ShaderType_LIGHTING,
+	ShaderType_PHONG,
 	ShaderType_LENGTH
 };
 
@@ -31,13 +33,16 @@ public:
 
 	void Update(float l_deltaTime);
 
+	void Draw(std::vector<OpenGLInfo>* l_openGLInfo);
+
 private:
 
 	ShaderManager();
 
 	static ShaderManager* instance;
 
-	std::vector<std::string> shaders;
+	std::vector<std::string> vShaders;
+	std::vector<std::string> fShaders;
 
 	FlyCamera* myCamera;
 
@@ -47,7 +52,7 @@ private:
 
 	int shader_Counter;
 
-	std::vector<unsigned int> IDs;
+	unsigned int programIDs[ShaderType::ShaderType_LENGTH];
 
-	unsigned int programID;
+	unsigned int m_programID;
 };

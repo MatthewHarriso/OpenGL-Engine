@@ -1,7 +1,6 @@
 #include "VertexLoader.h"
 #include "Vertex.h"
 #include "FlyCamera.h"
-
 #include <GLM/ext.hpp>
 #include <GLM/glm.hpp>
 
@@ -11,6 +10,7 @@ VertexLoader* VertexLoader::instance = nullptr;
 
 VertexLoader::VertexLoader()
 {
+	/*
 	//
 	//	if eLight is 1 then it is a direction light.
 	//
@@ -103,7 +103,7 @@ VertexLoader::VertexLoader()
 	
 	glDeleteShader(fragmentShader); 
 	glDeleteShader(vertexShader);
-
+*/
 	models.clear();
 }
 
