@@ -1,7 +1,7 @@
 #include "TextureLoader.h"
 #include "FlyCamera.h"
 
-TextureLoader* TextureLoader::instance = nullptr;
+TextureLoader* TextureLoader::instance;
 
 TextureLoader::TextureLoader()
 {

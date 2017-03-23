@@ -1,22 +1,9 @@
-﻿  VertexLoader.cpp
-  tiny_obj_loader.cc
-  TextureManager.cpp
-  TextureLoader.cpp
-c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\textureloader.cpp(142): warning C4244: 'initializing': conversion from 'GLint' to 'float', possible loss of data
-c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\textureloader.cpp(143): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
+﻿  Application.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  main.cpp
+  VertexLoader.cpp
   ShaderManager.cpp
   Renderer.cpp
   Object.cpp
-  Entity.cpp
-  main.cpp
-  FlyCamera.cpp
-  Camera.cpp
-  Application.cpp
-  Generating Code...
-  Compiling...
-  Gizmos.cpp
-  Generating Code...
-  gl_core_4_4.c
-  LINK : C:\Users\s171461\Documents\Visual Studio 2015\Projects\GLthings\Debug\GLthings.exe not found or not built by the last incremental link; performing full link
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  GLthings.vcxproj -> C:\Users\s171461\Documents\Visual Studio 2015\Projects\GLthings\Debug\GLthings.exe
+  GLthings.vcxproj -> C:\Users\s171461\documents\visual studio 2015\Projects\GLthings\Debug\GLthings.exe

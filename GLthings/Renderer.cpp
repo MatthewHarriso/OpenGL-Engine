@@ -4,7 +4,7 @@
 #include "Object.h"
 #include "Structures.h"
 
-Renderer* Renderer::instance = nullptr;
+Renderer* Renderer::instance;
 
 Renderer::Renderer()
 {
@@ -45,7 +45,7 @@ void Renderer::RemoveFromQueue(Object* l_Object)
 
 void Renderer::Update(float l_deltaTime)
 {
-	
+	shaderManager->Update(l_deltaTime, (*models.find(0)).second->GetOpenGLInfo());
 }
 
 void Renderer::Draw()

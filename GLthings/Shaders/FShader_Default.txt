@@ -1,22 +1,29 @@
 #version 410
-in vec4 vColour;
-in vec4 vNormal;
+
+in vec2 vTexCoord;
+in vec3 vNormal;
+in vec3 vTangent;
+in vec3 vBiTangent;
 in vec4 vPosition;
+
 out vec4 fragColor;
+
 uniform vec3 LightDir;
 uniform vec3 LightColour;
 uniform vec3 CameraPos;
 uniform float SpecPow;
 uniform int lightType;
+
+uniform sampler2D diffuse;
+uniform sampler2D normal;
+
 void main()
 {
-float d = max(0, dot(normalize(vNormal.xyz), LightDir));
-vec3 E = normalize(CameraPos - vPosition.xyz);
-vec3 R = reflect(-LightDir, vNormal.xyz);
-float s = max(0, dot(E, R));
-s = pow(s, SpecPow);
-if (s < 0.1)
-{
-s = 0.2;
+	mat3 TBN = mat3 (normalize(vTangent), normalize(vBiTangent), normalize(vNormal));
+	vec3 N = texture(normal, vTexCoord).xyz * 2 - 1;
+	
+	float d = max(0, dot(normalize(TBN * N), normalize(LightDir)));
+	
+	fragColor = texture(diffuse, vTexCoord);
+	fragColor.rgb = fragColor.rgb * d;
 }
-fragColor = vec4((vec4((LightColour * d + LightColour * s),1) * vColour));

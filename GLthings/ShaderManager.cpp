@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sstream>
 
+
+
 ShaderManager* ShaderManager::instance = nullptr;
 
 ShaderManager::ShaderManager()
@@ -60,8 +62,9 @@ void ShaderManager::LoadShaders()
 	for (std::vector<std::string>::iterator it = vShaders.begin(); it != vShaders.end(); it++)
 	{
 		const char* vsSource = (*v_it).data();
-
+		std::cout << vsSource << std::endl;
 		const char* fsSource = (*f_it).data();
+		std::cout << fsSource << std::endl;
 
 		int success = GL_FALSE;
 
@@ -90,6 +93,7 @@ void ShaderManager::LoadShaders()
 			infoLog = new char[infoLogLength];
 
 			glGetProgramInfoLog(m_programID, infoLogLength, 0, infoLog);
+			std::cout << infoLog;
 		}
 
 		programIDs[shader_Counter] = m_programID;
@@ -125,7 +129,7 @@ void ShaderManager::LoadFromFile()
 	}
 
 	file.close();
-
+	text.clear();
 	file.open("Shaders/FShader_Default.txt");
 
 	if (file.is_open())
@@ -144,15 +148,20 @@ void ShaderManager::LoadFromFile()
 	file.close();
 }
 
-void ShaderManager::Update(float l_deltaTime)
+void ShaderManager::Update(float l_deltaTime, std::vector<OpenGLInfo>* l_vecOpenGLInfo)
 {
+	std::vector<OpenGLInfo>::iterator it = l_vecOpenGLInfo->begin();
+
+	OpenGLInfo l_openGLInfo = *it;
+
 	timer += l_deltaTime; 
 	
-	unsigned int location = glGetUniformLocation(m_programID, "time");
+	unsigned int location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "time");
 	glUniform1f(location, timer);
 
-	location = glGetUniformLocation(m_programID, "heightScale");
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "heightScale");
 	glUniform1f(location, l_deltaTime);
+	
 }
 
 void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo)
@@ -161,24 +170,24 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo)
 
 	OpenGLInfo l_openGLInfo = *it;
 
-	glUseProgram(l_openGLInfo.m_ProgramID);
+	glUseProgram(programIDs[l_openGLInfo.m_ProgramID]);
 
-	unsigned int location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "projectionViewWorldMatrix");
+	int location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "projectionViewWorldMatrix");
 	glUniformMatrix4fv(location, 1, false, glm::value_ptr(myCamera->GetProjectionView()));
 
-	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "LightDir");
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightDir");
 	glUniform3f(location, 0.707, 0.707, 0.0);
 
-	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "LightColour");
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightColour");
 	glUniform3f(location, 1, 1, 1);
 
-	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "SpecPow");
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpecPow");
 	glUniform1f(location, 100.0);
 
-	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "CameraPos");
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "CameraPos");
 	glUniform3f(location, myCamera->GetPosition().x, myCamera->GetPosition().y, myCamera->GetPosition().z);
 
-	location = glGetUniformLocation(l_openGLInfo.m_ProgramID, "lightType");
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "lightType");
 	glUniform1i(location, eLight);
 
 	/*

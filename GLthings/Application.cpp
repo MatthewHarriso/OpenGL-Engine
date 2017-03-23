@@ -222,6 +222,8 @@ bool Application::Startup()
 	//	Shader Manager
 	shaderManager = ShaderManager::GetInstance();
 
+	shaderManager->SetCamera(myCamera);
+
 	shaderManager->LoadFromFile();
 
 	shaderManager->LoadShaders();
@@ -295,6 +297,14 @@ bool Application::Update()
 		
 		*/
 
+
+		if (glfwGetKey(window, GLFW_KEY_ENTER))
+		{
+			shaderManager->LoadFromFile();
+
+			shaderManager->LoadShaders();
+		}
+
 		renderer->Update(deltaTime);
 
 		myCamera->Update(deltaTime);
@@ -327,7 +337,7 @@ void Application::Draw()
 	//textureLoader->Draw();
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+	
 	renderer->Draw();
 
 	for (unsigned int i = 0; i < objectCounter; i++)

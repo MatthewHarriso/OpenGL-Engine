@@ -31,7 +31,7 @@ public:
 
 	void LoadFromFile();
 
-	void Update(float l_deltaTime);
+	void Update(float l_deltaTime, std::vector<OpenGLInfo>* l_openGLInfo);
 
 	void Draw(std::vector<OpenGLInfo>* l_openGLInfo);
 
@@ -56,3 +56,4 @@ private:
 
 	unsigned int m_programID;
 };
+
