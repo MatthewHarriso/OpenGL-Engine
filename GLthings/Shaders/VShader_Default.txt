@@ -4,6 +4,7 @@ layout(location=0) in vec4 position;
 layout(location=1) in vec2 texCoord;
 layout(location=2) in vec3 normal;
 layout(location=3) in vec4 tangent;
+layout(location=4) in vec4 bitangent;
 
 out vec2 vTexCoord;
 out vec3 vNormal;
@@ -16,9 +17,10 @@ uniform mat4 projectionViewWorldMatrix;
 void main()
 {
 	vTexCoord = texCoord;
+	vTexCoord.y = 1 - vTexCoord.y;
 	vNormal = normal;
 	vTangent = tangent.xyz;
-	vBiTangent = cross(vNormal, vTangent);
+	vBiTangent = bitangent.xyz;
 	gl_Position = projectionViewWorldMatrix * position;
 	vPosition = position;
 }

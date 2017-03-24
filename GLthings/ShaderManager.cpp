@@ -187,7 +187,7 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 	
 	light = glm::vec3(sin(glfwGetTime()), 1, cos(glfwGetTime()));
 
-	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "lightDir");
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightDir");
 	glUniform3f(location, light.x, light.y, light.z);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightColour");
