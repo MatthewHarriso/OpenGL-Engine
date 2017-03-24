@@ -1,5 +1,4 @@
 #include "VertexLoader.h"
-#include "Vertex.h"
 #include "FlyCamera.h"
 #include <GLM/ext.hpp>
 #include <GLM/glm.hpp>
@@ -141,7 +140,7 @@ std::vector<OpenGLInfo>* VertexLoader::CreateOpenGLBuffers(tinyobj::attrib_t & a
 		m_glInfo->at(shapeIndex).m_faceCount = shape.mesh.num_face_vertices.size();
 
 		// collect triangle vertices
-		std::vector<OBJVertex> vertices;
+		std::vector<Vertex> vertices;
 
 		int index = 0;
 
@@ -151,26 +150,33 @@ std::vector<OpenGLInfo>* VertexLoader::CreateOpenGLBuffers(tinyobj::attrib_t & a
 			{
 				tinyobj::index_t idx = shape.mesh.indices[index + i];
 
-				OBJVertex v = { 0 };
+				Vertex v;
+				v.bitangent = glm::vec4(0);
+				v.position = glm::vec4(0);
+				v.texcoord = glm::vec2(0);
+				v.colour = glm::vec4(0);
+				v.tangent = glm::vec4(0);
+				v.normal = glm::vec3(0);
 
 				// positions
-				v.x = attribs.vertices[3 * idx.vertex_index + 0];
-				v.y = attribs.vertices[3 * idx.vertex_index + 1];
-				v.z = attribs.vertices[3 * idx.vertex_index + 2];
+				v.position.x = attribs.vertices[3 * idx.vertex_index + 0];
+				v.position.y = attribs.vertices[3 * idx.vertex_index + 1];
+				v.position.z = attribs.vertices[3 * idx.vertex_index + 2];
+				v.position.w = 1;
 
 				// normals
 				if (attribs.normals.size() > 0)
 				{
-					v.nx = attribs.normals[3 * idx.normal_index + 0];
-					v.ny = attribs.normals[3 * idx.normal_index + 1];
-					v.nz = attribs.normals[3 * idx.normal_index + 2];
+					v.normal.x = attribs.normals[3 * idx.normal_index + 0];
+					v.normal.y = attribs.normals[3 * idx.normal_index + 1];
+					v.normal.z = attribs.normals[3 * idx.normal_index + 2];
 				}
 
 				// texture coordinates
 				if (attribs.texcoords.size() > 0)
 				{
-					v.u = attribs.texcoords[2 * idx.texcoord_index + 0];
-					v.v = attribs.texcoords[2 * idx.texcoord_index + 1];
+					v.texcoord.s = attribs.texcoords[2 * idx.texcoord_index + 0];
+					v.texcoord.t = attribs.texcoords[2 * idx.texcoord_index + 1];
 				}
 
 				vertices.push_back(v);
@@ -179,22 +185,36 @@ std::vector<OpenGLInfo>* VertexLoader::CreateOpenGLBuffers(tinyobj::attrib_t & a
 			index += face;
 		}
 
+		std::vector<unsigned int> indicies;
+		indicies.resize(vertices.size());
+
+		for (unsigned int i = 0; i < vertices.size(); i++)
+		{
+			indicies.push_back(i);
+		}
+
+		calculateTangents(vertices, indicies);
+
 		// bind vertex data
 		glBindBuffer(GL_ARRAY_BUFFER, m_glInfo->at(shapeIndex).m_VBO);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(OBJVertex), vertices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
 		//position
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(OBJVertex), 0);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 
-		//normal data
+		//tex Coord data
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, sizeof(OBJVertex), (void*)12);
-
-		//texture data
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(OBJVertex), (void*)24);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)24);
 		
+		//normal data
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)12);
+
+		//tangent data
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void*)12);
+
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -294,6 +314,72 @@ std::vector<OpenGLInfo>* VertexLoader::LoadGeometry(const char * l_textureFileNa
 	models.insert(std::map<const std::string, std::vector<OpenGLInfo>*>::value_type(name, CreateOpenGLBuffers(attribs, shapes)));
 
 	return (*models.find(name)).second;
+}
+
+void VertexLoader::calculateTangents(std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) 
+{
+	unsigned int vertexCount = (unsigned int)vertices.size();
+	glm::vec4* tan1 = new glm::vec4[vertexCount * 2];
+	glm::vec4* tan2 = tan1 + vertexCount;
+	memset(tan1, 0, vertexCount * sizeof(glm::vec4) * 2);
+
+	unsigned int indexCount = (unsigned int)indices.size();
+	for (unsigned int a = 0; a < indexCount; a += 3) {
+		long i1 = indices[a];
+		long i2 = indices[a + 1];
+		long i3 = indices[a + 2];
+
+		const glm::vec4& v1 = vertices[i1].position;
+		const glm::vec4& v2 = vertices[i2].position;
+		const glm::vec4& v3 = vertices[i3].position;
+
+		const glm::vec2& w1 = vertices[i1].texcoord;
+		const glm::vec2& w2 = vertices[i2].texcoord;
+		const glm::vec2& w3 = vertices[i3].texcoord;
+
+		float x1 = v2.x - v1.x;
+		float x2 = v3.x - v1.x;
+		float y1 = v2.y - v1.y;
+		float y2 = v3.y - v1.y;
+		float z1 = v2.z - v1.z;
+		float z2 = v3.z - v1.z;
+
+		float s1 = w2.x - w1.x;
+		float s2 = w3.x - w1.x;
+		float t1 = w2.y - w1.y;
+		float t2 = w3.y - w1.y;
+
+		float r = 1.0F / (s1 * t2 - s2 * t1);
+		glm::vec4 sdir((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r,
+			(t2 * z1 - t1 * z2) * r, 0);
+		glm::vec4 tdir((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r,
+			(s1 * z2 - s2 * z1) * r, 0);
+
+		tan1[i1] += sdir;
+		tan1[i2] += sdir;
+		tan1[i3] += sdir;
+
+		tan2[i1] += tdir;
+		tan2[i2] += tdir;
+		tan2[i3] += tdir;
+	}
+
+	for (unsigned int a = 0; a < vertexCount; a++) {
+		const glm::vec3& n = glm::vec3(vertices[a].normal);
+		const glm::vec3& t = glm::vec3(tan1[a]);
+
+		// Gram-Schmidt orthogonalize
+		vertices[a].tangent = glm::vec4(glm::normalize(t - n * glm::dot(n, t)), 0);
+
+		// Calculate handedness (direction of bitangent)
+		vertices[a].tangent.w = (glm::dot(glm::cross(glm::vec3(n), glm::vec3(t)), glm::vec3(tan2[a])) < 0.0F) ? 1.0F : -1.0F;
+
+		// calculate bitangent (ignoring for Vertex)
+		vertices[a].bitangent = glm::vec4(glm::cross(glm::vec3(vertices[a].normal), glm::vec3(vertices[a].tangent)) * vertices[a].tangent.w, 0);
+		vertices[a].tangent.w = 0;
+	}
+
+	delete[] tan1;
 }
 
 void VertexLoader::Update(float l_deltaTime)

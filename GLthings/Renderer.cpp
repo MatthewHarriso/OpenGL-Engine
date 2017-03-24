@@ -1,6 +1,6 @@
 #include "Renderer.h"
 #include "ShaderManager.h"
-#include "TextureLoader.h"
+#include "TextureManager.h"
 #include "Object.h"
 #include "Structures.h"
 
@@ -50,5 +50,5 @@ void Renderer::Update(float l_deltaTime)
 
 void Renderer::Draw()
 {
-	shaderManager->Draw((*models.find(0)).second->GetOpenGLInfo());
+	shaderManager->Draw((*models.find(0)).second->GetOpenGLInfo(), (*models.find(0)).second->GetTexture());
 }

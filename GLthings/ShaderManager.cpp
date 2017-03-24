@@ -38,6 +38,8 @@ void ShaderManager::Create()
 	shader_Counter = 0;
 
 	m_programID = 0;
+
+	light = glm::vec3(0);
 }
 
 void ShaderManager::ShutDown()
@@ -156,15 +158,14 @@ void ShaderManager::Update(float l_deltaTime, std::vector<OpenGLInfo>* l_vecOpen
 
 	timer += l_deltaTime; 
 	
-	unsigned int location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "time");
+	int location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "time");
 	glUniform1f(location, timer);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "heightScale");
 	glUniform1f(location, l_deltaTime);
-	
 }
 
-void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo)
+void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_textureIndexes[3])
 {
 	std::vector<OpenGLInfo>::iterator it = l_vecOpenGLInfo->begin();
 
@@ -172,11 +173,22 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo)
 
 	glUseProgram(programIDs[l_openGLInfo.m_ProgramID]);
 
-	int location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "projectionViewWorldMatrix");
-	glUniformMatrix4fv(location, 1, false, glm::value_ptr(myCamera->GetProjectionView()));
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, l_textureIndexes[0]);
 
-	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightDir");
-	glUniform3f(location, 0.707, 0.707, 0.0);
+	if (l_textureIndexes[1] != -1)
+	{
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, l_textureIndexes[1]);
+	}
+
+	int location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "projectionViewWorldMatrix");
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(myCamera->GetProjectionView()));
+	
+	light = glm::vec3(sin(glfwGetTime()), 1, cos(glfwGetTime()));
+
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "lightDir");
+	glUniform3f(location, light.x, light.y, light.z);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightColour");
 	glUniform3f(location, 1, 1, 1);
@@ -190,11 +202,14 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo)
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "lightType");
 	glUniform1i(location, eLight);
 
-	/*
-	glBindVertexArray(l_openGLInfo.m_VAO);
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "diffuse");
+	glUniform1i(location, 0);
 
-	glDrawElements(GL_TRIANGLES, l_openGLInfo.m_faceCount, GL_UNSIGNED_INT, 0);
-	*/
+	if (l_textureIndexes[1] != -1)
+	{
+		location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "normal");
+		glUniform1i(location, 1);
+	}
 
 	for ( ; it != l_vecOpenGLInfo->end(); it++)
 	{

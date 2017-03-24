@@ -1,9 +1,2 @@
-﻿  Application.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  main.cpp
-  VertexLoader.cpp
-  ShaderManager.cpp
-  Renderer.cpp
-  Object.cpp
+﻿  VertexLoader.cpp
   GLthings.vcxproj -> C:\Users\s171461\documents\visual studio 2015\Projects\GLthings\Debug\GLthings.exe

@@ -184,7 +184,6 @@
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="tiny_obj_loader.h" />
-    <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

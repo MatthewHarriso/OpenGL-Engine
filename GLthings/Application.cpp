@@ -28,7 +28,7 @@ void Application::Shutdown()
 {
 	delete myCamera;
 
-	delete textureLoader;
+	delete textureManager;
 	
 	delete vertexLoader;
 
@@ -124,7 +124,9 @@ bool Application::Startup()
 		gameObjects[i]->Startup();
 	}
 
-	gameObjects[objectCounter]->SetMesh("models/Bunny.obj");
+	gameObjects[objectCounter]->SetMesh("models/soulspear.obj");
+	gameObjects[objectCounter]->SetTexture("textures/soulspear_diffuse.tga");
+	gameObjects[objectCounter]->SetNormal("textures/soulspear_normal.tga");
 	gameObjects[objectCounter]->SetShader(ShaderType::ShaderType_DEFAULT);
 
 	objectCounter++;
@@ -229,14 +231,10 @@ bool Application::Startup()
 	shaderManager->LoadShaders();
 
 	//	Texture Renderer.
-	textureLoader = TextureLoader::GetInstance();
-	
-	textureLoader->SetScreen(window);
+	textureManager = TextureManager::GetInstance();
 
-	textureLoader->SetCamera(myCamera);
-
-	textureLoader->AddTexture("compiling.png");
-	textureLoader->AddTexture("test.jpg");
+	textureManager->AddTexture("compiling.png");
+	textureManager->AddTexture("test.jpg");
 	//	textureLoader->AddTexture("compilingNM.png");
 
 	//	Vertex Renderer.
@@ -314,7 +312,7 @@ bool Application::Update()
 			gameObjects[i]->Update(deltaTime);
 		}
 
-		textureLoader->Update(currentTime);
+		textureManager->Update(currentTime);
 
 		vertexLoader->Update(deltaTime);
 

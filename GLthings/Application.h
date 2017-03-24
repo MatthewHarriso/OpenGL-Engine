@@ -4,7 +4,7 @@
 #include <GLM\glm.hpp>
 #include <GLM\ext.hpp>
 
-#include "TextureLoader.h"
+#include "TextureManager.h"
 #include "VertexLoader.h"
 
 #define OBJECT_LIMIT 50
@@ -47,7 +47,7 @@ private:
 
 	ShaderManager* shaderManager;
 
-	TextureLoader* textureLoader;
+	TextureManager* textureManager;
 
 	VertexLoader* vertexLoader;
 

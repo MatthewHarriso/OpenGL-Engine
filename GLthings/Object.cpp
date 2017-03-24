@@ -21,7 +21,9 @@ void Object::Startup()
 
 	_Mesh = nullptr;
 	_Shader = -1;
-	_Texture = -1;
+	_Texture[0] = -1;
+	_Texture[1] = -1;
+	_Texture[2] = -1;
 
 	Parent = nullptr;
 }
@@ -36,7 +38,12 @@ void Object::ShutDown()
 
 void Object::SetTexture(char * l_Texture)
 {
-	_Texture = textureLoader->AddTexture(l_Texture);
+	_Texture[0] = textureLoader->AddTexture(l_Texture);
+}
+
+void Object::SetNormal(char * l_Texture)
+{
+	_Texture[1] = textureLoader->AddTexture(l_Texture);
 }
 
 void Object::SetMesh(char * l_Mesh)
@@ -63,6 +70,11 @@ void Object::SetShader(unsigned int l_shader)
 unsigned int Object::GetRenderIndex()
 {
 	return renderIndex;
+}
+
+int* Object::GetTexture()
+{
+	return _Texture;
 }
 
 std::vector<OpenGLInfo>* Object::GetOpenGLInfo()

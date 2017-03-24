@@ -3,6 +3,8 @@
 #include <iostream>
 #include "Structures.h"
 #include <gl_core_4_4.h>
+#include <GLM\glm.hpp>
+#include <GLM\ext.hpp>
 
 enum ShaderType
 {
@@ -33,7 +35,7 @@ public:
 
 	void Update(float l_deltaTime, std::vector<OpenGLInfo>* l_openGLInfo);
 
-	void Draw(std::vector<OpenGLInfo>* l_openGLInfo);
+	void Draw(std::vector<OpenGLInfo>* l_openGLInfo, int l_textureIndexes[3]);
 
 private:
 
@@ -43,6 +45,8 @@ private:
 
 	std::vector<std::string> vShaders;
 	std::vector<std::string> fShaders;
+
+	glm::vec3 light;
 
 	FlyCamera* myCamera;
 

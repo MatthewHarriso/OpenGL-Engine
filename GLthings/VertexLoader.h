@@ -35,6 +35,8 @@ private:
 
 	static VertexLoader* instance;
 
+	void calculateTangents(std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+
 	std::map<const std::string, std::vector<OpenGLInfo>*> models;
 
 	FlyCamera* myCamera;
