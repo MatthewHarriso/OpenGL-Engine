@@ -6,6 +6,7 @@
 
 #include "TextureManager.h"
 #include "VertexLoader.h"
+#include "PostProcessing.h"
 
 #define OBJECT_LIMIT 50
 
@@ -50,6 +51,8 @@ private:
 	TextureManager* textureManager;
 
 	VertexLoader* vertexLoader;
+
+	PostProcessing* postProcessing;
 
 	glm::mat4 view;
 	glm::mat4 projection;

@@ -14,6 +14,7 @@ uniform vec3 CameraPos;
 
 uniform float AmbientLight;
 uniform float SpecPow;
+uniform float roughness;
 
 uniform int lightType;
 
@@ -31,6 +32,25 @@ void main()
 	vec3 E = normalize(CameraPos - vPosition.xyz);
 	vec3 R = reflect(-LightDir, vNormal.xyz);
 	
+	float NdL = max( 0.0f, dot(N, LightDir));
+	float NdE = max( 0.0f, dot(N, E));
+	
+	float R2 = roughness * roughness;
+	
+	float A = 1.0f - 0.5f * R2 / (R2 + 0.33f);
+	float B = 0.45f * R2 / (R2 + 0.09f);
+	
+	vec3 lightProjected = normalize(LightDir - N * NdL);
+	vec3 viewProjected = normalize(E - N * NdE);
+	
+	float CX = max(0.0f, dot(lightProjected, viewProjected));
+	
+	float alpha = sin(max(acos(NdE), acos(NdL)));
+	float beta = tan(min(acos(NdE), acos(NdL)));
+	float DX = alpha * beta;
+	
+	float OrenNayar = NdL * (A + B * CX * DX);
+	
 	float s = pow( min(0, dot(E, R)), SpecPow);
 	
 	if (s <= AmbientLight)
@@ -39,5 +59,5 @@ void main()
 	}
 	
 	fragColor = texture(diffuse, vTexCoord);
-	fragColor = vec4(LightColour * d + LightColour * s, 1);
+	fragColor *= vec4(LightColour * OrenNayar + LightColour * s, 1);
 }

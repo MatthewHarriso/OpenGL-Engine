@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\</FILEPATH>
+      <FILENAME>tiny_obj_loader.h</FILENAME>
+      <LINE>1415</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>6262</DEFECTCODE>
+    <DESCRIPTION>Function uses '17116' bytes of stack:  exceeds /analyze:stacksize '16384'.  Consider moving some data to heap.</DESCRIPTION>
+    <FUNCTION>tinyobj::LoadObj</FUNCTION>
+    <DECORATED>?LoadObj@tinyobj@@YA_NPAUattrib_t@1@PAV?$vector@Ushape_t@tinyobj@@V?$allocator@Ushape_t@tinyobj@@@std@@@std@@PAV?$vector@Umaterial_t@tinyobj@@V?$allocator@Umaterial_t@tinyobj@@@std@@@4@PAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@4@PAV?$basic_istream@DU?$char_traits@D@std@@@4@PAVMaterialReader@1@_N@Z</DECORATED>
+    <FUNCLINE>1415</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

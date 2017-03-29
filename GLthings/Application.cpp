@@ -94,7 +94,7 @@ bool Application::Startup()
 
 	myCamera = new FlyCamera();
 
-	myCamera->SetPerspective(glm::pi<float>() * 0.3f, (SCREEN_WIDTH / SCREEN_HEIGHT) * 1.75f, 1.5f, 500.f);
+	myCamera->SetPerspective(glm::pi<float>() * 0.3f, (SCREEN_WIDTH / SCREEN_HEIGHT) * 1.75f, 0.5f, 500.f);
 
 	myCamera->SetLookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
@@ -226,7 +226,10 @@ bool Application::Startup()
 
 	shaderManager->SetCamera(myCamera);
 
-	shaderManager->LoadFromFile();
+	shaderManager->LoadFromFile("Shaders/VShader_Default.txt");
+	shaderManager->LoadFromFile("Shaders/FShader_Default.txt");
+	shaderManager->LoadFromFile("Shaders/PostVShader.txt");
+	shaderManager->LoadFromFile("Shaders/PostFShader.txt");
 
 	shaderManager->LoadShaders();
 
@@ -244,6 +247,14 @@ bool Application::Startup()
 
 	//	Vertex Loader.
 
+	//	PostProcessing.
+
+	postProcessing = PostProcessing::GetInstance();
+
+	postProcessing->SetCamera(myCamera);
+
+	//	PostProcessing.
+
 	//	Renderer.
 
 	renderer = Renderer::GetInstance();
@@ -251,6 +262,8 @@ bool Application::Startup()
 	renderer->AddToQueue(gameObjects[0]);
 
 	//	Renderer.
+
+	glEnable(GL_DEPTH_TEST);
 
 	return true;
 }
@@ -295,7 +308,7 @@ bool Application::Update()
 
 		if (glfwGetKey(window, GLFW_KEY_ENTER))
 		{
-			shaderManager->LoadFromFile();
+			//shaderManager->LoadFromFile();
 
 			shaderManager->LoadShaders();
 		}

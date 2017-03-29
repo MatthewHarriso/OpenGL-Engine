@@ -9,7 +9,7 @@
 enum ShaderType
 {
 	ShaderType_DEFAULT,
-	ShaderType_PHONG,
+	ShaderType_POSTPROCESSING,
 	ShaderType_LENGTH
 };
 
@@ -31,7 +31,7 @@ public:
 
 	void LoadShaders();
 
-	void LoadFromFile();
+	void LoadFromFile(char* l_textName);
 
 	void Update(float l_deltaTime, std::vector<OpenGLInfo>* l_openGLInfo);
 

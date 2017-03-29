@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-#define AMBIENT_LIGHT 0.2f
+#define AMBIENT_LIGHT 0.0f
 
 ShaderManager* ShaderManager::instance = nullptr;
 
@@ -113,13 +113,13 @@ void ShaderManager::LoadShaders()
 	}
 }
 
-void ShaderManager::LoadFromFile()
+void ShaderManager::LoadFromFile(char* l_textName)
 {
 	std::fstream file;
 
 	std::string text, c;
 
-	file.open("Shaders/VShader_Default.txt");
+	file.open(l_textName);
 
 	if (file.is_open())
 	{
@@ -131,27 +131,18 @@ void ShaderManager::LoadFromFile()
 			text += c;
 		}
 
-		vShaders.push_back(text);
+		if (l_textName[8] == 'V')
+		{
+			vShaders.push_back(text);
+		}
+		else
+		{
+			fShaders.push_back(text);
+		}
 	}
 
 	file.close();
 	text.clear();
-	file.open("Shaders/FShader_Default.txt");
-
-	if (file.is_open())
-	{
-		std::getline(file, c);
-		text += c + "\n";
-
-		while (std::getline(file, c))
-		{
-			text += c;
-		}
-
-		fShaders.push_back(text);
-	}
-
-	file.close();
 }
 
 void ShaderManager::Update(float l_deltaTime, std::vector<OpenGLInfo>* l_vecOpenGLInfo)
@@ -204,10 +195,13 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 	glUniform1f(location, AMBIENT_LIGHT);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightColour");
-	glUniform3f(location, 0.1f, 0.2f, 0.15f);
+	glUniform3f(location, 1, 1, 1);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpecPow");
-	glUniform1f(location, 125.0f);
+	glUniform1f(location, 25.0f);
+
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "roughness");
+	glUniform1f(location, 0);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "CameraPos");
 	glUniform3f(location, myCamera->GetPosition().x, myCamera->GetPosition().y, myCamera->GetPosition().z);
