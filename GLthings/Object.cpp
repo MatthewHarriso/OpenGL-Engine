@@ -1,5 +1,5 @@
 #include "Object.h"
-#include "TextureLoader.h"
+#include "TextureManager.h"
 #include "VertexLoader.h"
 
 Object::Object()
@@ -17,7 +17,7 @@ void Object::Startup()
 	renderIndex = 0;
 
 	vertexLoader = VertexLoader::GetInstance();
-	textureLoader = TextureLoader::GetInstance();
+	textureManager = TextureManager::GetInstance();
 
 	_Mesh = nullptr;
 	_Shader = -1;
@@ -38,12 +38,17 @@ void Object::ShutDown()
 
 void Object::SetTexture(char * l_Texture)
 {
-	_Texture[0] = textureLoader->AddTexture(l_Texture);
+	_Texture[0] = textureManager->AddTexture(l_Texture);
 }
 
 void Object::SetNormal(char * l_Texture)
 {
-	_Texture[1] = textureLoader->AddTexture(l_Texture);
+	_Texture[1] = textureManager->AddNormal(l_Texture);
+}
+
+void Object::SetSpecular(char * l_Texture)
+{
+	_Texture[2] = textureManager->AddSpecular(l_Texture);
 }
 
 void Object::SetMesh(char * l_Mesh)
@@ -61,7 +66,7 @@ void Object::SetRenderIndex(unsigned int l_index)
 	renderIndex = l_index;
 }
 
-void Object::SetShader(unsigned int l_shader)
+void Object::SetShader(int l_shader)
 {
 	std::vector<OpenGLInfo>::iterator it = _Mesh->begin();
 	(*it).m_ProgramID = l_shader;
@@ -70,6 +75,11 @@ void Object::SetShader(unsigned int l_shader)
 unsigned int Object::GetRenderIndex()
 {
 	return renderIndex;
+}
+
+int Object::GetShader()
+{
+	return _Shader;
 }
 
 int* Object::GetTexture()

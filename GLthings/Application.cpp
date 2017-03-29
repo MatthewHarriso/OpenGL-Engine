@@ -219,7 +219,7 @@ bool Application::Startup()
 
 	splitScreenOrientation = 1;
 
-	glClearColor(0.25f, 0.25f, 0.25f, 1);
+	glClearColor(0.15f, 0.15f, 0.15f, 1);
 
 	//	Shader Manager
 	shaderManager = ShaderManager::GetInstance();
@@ -230,14 +230,11 @@ bool Application::Startup()
 
 	shaderManager->LoadShaders();
 
-	//	Texture Renderer.
+	//	Texture Manager.
+
 	textureManager = TextureManager::GetInstance();
 
-	textureManager->AddTexture("compiling.png");
-	textureManager->AddTexture("test.jpg");
-	//	textureLoader->AddTexture("compilingNM.png");
-
-	//	Vertex Renderer.
+	//	Vertex Loader.
 
 	vertexLoader = VertexLoader::GetInstance();
 
@@ -245,7 +242,7 @@ bool Application::Startup()
 
 	vertexLoader->GenerateGrid(100, 100);
 
-	//	Vertex Renderer.
+	//	Vertex Loader.
 
 	//	Renderer.
 

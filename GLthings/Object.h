@@ -4,7 +4,7 @@
 #include "Structures.h"
 
 class VertexLoader;
-class TextureLoader;
+class TextureManager;
 
 class Object
 {
@@ -16,13 +16,16 @@ public:
 	void Startup ();
 
 	void SetTexture (char* l_Texture);
-	void SetNormal(char* l_Texture);
+	void SetNormal (char* l_Texture);
+	void SetSpecular (char* l_Texture);
 	void SetMesh (char* l_Mesh);
 	void SetParent (Object* l_Parent);
 	void SetRenderIndex (unsigned int l_index);
-	void SetShader(unsigned int l_shader);
+	void SetShader (int l_shader);
 
 	unsigned int GetRenderIndex ();
+
+	int GetShader();
 
 	int* GetTexture();
 
@@ -41,10 +44,10 @@ private:
 	unsigned int renderIndex;
 
 	std::vector<OpenGLInfo>* _Mesh;
-	unsigned int _Shader;
+	int _Shader;
 	int _Texture[3];
 
-	TextureLoader* textureLoader;
+	TextureManager* textureManager;
 
 	VertexLoader* vertexLoader;
 

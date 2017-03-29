@@ -15,6 +15,7 @@ public:
 
 	int AddTexture(const char* l_textureFileName);
 	int AddNormal(const char* l_textureFileName);
+	int AddSpecular(const char* l_textureFileName);
 
 	int GetTexture(int l_textureIndex);
 

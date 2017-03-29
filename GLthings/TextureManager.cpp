@@ -41,6 +41,34 @@ int TextureManager::AddTexture(const char * l_textureFileName)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	}
 	else
+	if (imageFormat == 3)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	}
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	textureIndex++;
+
+	stbi_image_free(data);
+
+	return m_texture[textureIndex - 1];
+}
+
+int TextureManager::AddNormal(const char * l_textureFileName)
+{
+	int imageWidth = 0, imageHeight = 0, imageFormat = 0;
+
+	unsigned char* data = stbi_load(l_textureFileName,
+		&imageWidth, &imageHeight, &imageFormat, STBI_default);
+
+	glGenTextures(1, &m_texture[textureIndex]);
+	glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex]);
+	if (imageFormat == 4)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	}
+	else
 		if (imageFormat == 3)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -55,7 +83,7 @@ int TextureManager::AddTexture(const char * l_textureFileName)
 	return m_texture[textureIndex - 1];
 }
 
-int TextureManager::AddNormal(const char * l_textureFileName)
+int TextureManager::AddSpecular(const char * l_textureFileName)
 {
 	int imageWidth = 0, imageHeight = 0, imageFormat = 0;
 

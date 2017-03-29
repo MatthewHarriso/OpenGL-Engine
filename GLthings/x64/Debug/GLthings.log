@@ -1,10 +1,10 @@
 ﻿  VertexLoader.cpp
-c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\vertexloader.cpp(141): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\ihackeddeath\documents\opengl-engine\glthings\vertexloader.cpp(140): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
   tiny_obj_loader.cc
   TextureManager.cpp
   TextureLoader.cpp
-c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\textureloader.cpp(142): warning C4244: 'initializing': conversion from 'GLint' to 'float', possible loss of data
-c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\textureloader.cpp(143): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
+c:\users\ihackeddeath\documents\opengl-engine\glthings\textureloader.cpp(142): warning C4244: 'initializing': conversion from 'GLint' to 'float', possible loss of data
+c:\users\ihackeddeath\documents\opengl-engine\glthings\textureloader.cpp(143): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
   ShaderManager.cpp
   Renderer.cpp
   Object.cpp
@@ -25,6 +25,7 @@ Application.obj : error LNK2019: unresolved external symbol glfwPollEvents refer
 Application.obj : error LNK2019: unresolved external symbol glfwGetKey referenced in function "public: bool __cdecl Application::Update(void)" (?Update@Application@@QEAA_NXZ)
 FlyCamera.obj : error LNK2001: unresolved external symbol glfwGetKey
 Application.obj : error LNK2019: unresolved external symbol glfwGetTime referenced in function "public: bool __cdecl Application::Update(void)" (?Update@Application@@QEAA_NXZ)
+ShaderManager.obj : error LNK2001: unresolved external symbol glfwGetTime
 Application.obj : error LNK2019: unresolved external symbol glfwMakeContextCurrent referenced in function "public: bool __cdecl Application::Startup(void)" (?Startup@Application@@QEAA_NXZ)
 Application.obj : error LNK2019: unresolved external symbol glfwSwapBuffers referenced in function "public: void __cdecl Application::Draw(void)" (?Draw@Application@@QEAAXXZ)
 Application.obj : error LNK2019: unresolved external symbol glfwSwapInterval referenced in function "public: bool __cdecl Application::Startup(void)" (?Startup@Application@@QEAA_NXZ)
@@ -32,5 +33,5 @@ FlyCamera.obj : error LNK2019: unresolved external symbol glfwSetInputMode refer
 FlyCamera.obj : error LNK2019: unresolved external symbol glfwGetMouseButton referenced in function "public: virtual void __cdecl FlyCamera::Update(float)" (?Update@FlyCamera@@UEAAXM@Z)
 FlyCamera.obj : error LNK2019: unresolved external symbol glfwGetCursorPos referenced in function "public: virtual void __cdecl FlyCamera::Update(float)" (?Update@FlyCamera@@UEAAXM@Z)
 FlyCamera.obj : error LNK2019: unresolved external symbol glfwSetCursorPos referenced in function "public: virtual void __cdecl FlyCamera::Update(float)" (?Update@FlyCamera@@UEAAXM@Z)
-C:\Users\s171461\Documents\Visual Studio 2015\Projects\GLthings\lib\\glfw3.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
-C:\Users\s171461\Documents\Visual Studio 2015\Projects\GLthings\x64\Debug\GLthings.exe : fatal error LNK1120: 15 unresolved externals
+C:\Users\IHackedDeath\Documents\OpenGL-Engine\lib\\glfw3.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+C:\Users\IHackedDeath\Documents\OpenGL-Engine\x64\Debug\GLthings.exe : fatal error LNK1120: 15 unresolved externals

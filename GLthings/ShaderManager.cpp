@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-
+#define AMBIENT_LIGHT 0.2f
 
 ShaderManager* ShaderManager::instance = nullptr;
 
@@ -54,6 +54,10 @@ void ShaderManager::SetCamera(FlyCamera * l_camera)
 
 void ShaderManager::LoadShaders()
 {
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CW);
+
 	eLight = 1;
 
 	timer = 0;
@@ -182,6 +186,12 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 		glBindTexture(GL_TEXTURE_2D, l_textureIndexes[1]);
 	}
 
+	if (l_textureIndexes[2] != -1)
+	{
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, l_textureIndexes[2]);
+	}
+
 	int location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "projectionViewWorldMatrix");
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(myCamera->GetProjectionView()));
 	
@@ -190,11 +200,14 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightDir");
 	glUniform3f(location, light.x, light.y, light.z);
 
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "AmbientLight");
+	glUniform1f(location, AMBIENT_LIGHT);
+
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightColour");
-	glUniform3f(location, 1, 1, 1);
+	glUniform3f(location, 0.1f, 0.2f, 0.15f);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpecPow");
-	glUniform1f(location, 100.0);
+	glUniform1f(location, 125.0f);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "CameraPos");
 	glUniform3f(location, myCamera->GetPosition().x, myCamera->GetPosition().y, myCamera->GetPosition().z);
@@ -209,6 +222,12 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 	{
 		location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "normal");
 		glUniform1i(location, 1);
+	}
+
+	if (l_textureIndexes[2] != -1)
+	{
+		location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "specular");
+		glUniform1i(location, 2);
 	}
 
 	for ( ; it != l_vecOpenGLInfo->end(); it++)

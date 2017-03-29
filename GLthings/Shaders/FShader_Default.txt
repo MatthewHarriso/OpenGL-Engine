@@ -11,11 +11,15 @@ out vec4 fragColor;
 uniform vec3 LightDir;
 uniform vec3 LightColour;
 uniform vec3 CameraPos;
+
+uniform float AmbientLight;
 uniform float SpecPow;
+
 uniform int lightType;
 
 uniform sampler2D diffuse;
 uniform sampler2D normal;
+uniform sampler2D Specular;
 
 void main()
 {
@@ -24,6 +28,16 @@ void main()
 	
 	float d = max(0, dot(normalize(TBN * N), normalize(LightDir)));
 	
+	vec3 E = normalize(CameraPos - vPosition.xyz);
+	vec3 R = reflect(-LightDir, vNormal.xyz);
+	
+	float s = pow( min(0, dot(E, R)), SpecPow);
+	
+	if (s <= AmbientLight)
+	{
+		s = AmbientLight;
+	}
+	
 	fragColor = texture(diffuse, vTexCoord);
-	fragColor.rgb = fragColor.rgb * d;
+	fragColor = vec4(LightColour * d + LightColour * s, 1);
 }
