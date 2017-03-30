@@ -12,7 +12,7 @@
 #define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 900
 #define PLAYERS 1
-#define CAMERA_SPEED 25
+#define CAMERA_SPEED 12
 
 Application::Application()
 {
@@ -131,6 +131,12 @@ bool Application::Startup()
 
 	objectCounter++;
 
+	gameObjects[objectCounter]->SetMesh("models/Plane.obj");
+	gameObjects[objectCounter]->SetTexture("textures/white.jpg");
+	gameObjects[objectCounter]->SetShader(ShaderType::ShaderType_DEFAULT);
+
+	objectCounter++;
+
 	//				^
 	//	Objects		|
 	//				|
@@ -228,8 +234,8 @@ bool Application::Startup()
 
 	shaderManager->LoadFromFile("Shaders/VShader_Default.txt");
 	shaderManager->LoadFromFile("Shaders/FShader_Default.txt");
-	shaderManager->LoadFromFile("Shaders/PostVShader.txt");
-	shaderManager->LoadFromFile("Shaders/PostFShader.txt");
+	shaderManager->LoadFromFile("Shaders/VShader_Post.txt");
+	shaderManager->LoadFromFile("Shaders/FShader_Post.txt");
 
 	shaderManager->LoadShaders();
 
@@ -253,13 +259,18 @@ bool Application::Startup()
 
 	postProcessing->SetCamera(myCamera);
 
+	postProcessing->Create();
+
 	//	PostProcessing.
 
 	//	Renderer.
 
 	renderer = Renderer::GetInstance();
 
-	renderer->AddToQueue(gameObjects[0]);
+	for (int i = 0; i < objectCounter; i++)
+	{
+		renderer->AddToQueue(gameObjects[i]);
+	}
 
 	//	Renderer.
 

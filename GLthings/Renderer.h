@@ -5,6 +5,7 @@
 class Object;
 class ShaderManager;
 class TextureManager;
+class PostProcessing;
 
 class Renderer
 {
@@ -30,6 +31,7 @@ private:
 
 	ShaderManager* shaderManager;
 	TextureManager* textureManager;
+	PostProcessing* postProcessing;
 
 	std::map<unsigned int, Object*> models;
 

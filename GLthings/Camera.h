@@ -29,6 +29,8 @@ public:
 	glm::mat4 GetProjection();
 	glm::mat4 GetProjectionView();
 
+	float GetNearPlane();
+
 protected:
 
 	void UpdateProjectionViewTransform();
@@ -39,4 +41,6 @@ protected:
 	glm::mat4 viewTransform;
 	glm::mat4 projectionTransform;
 	glm::mat4 projectionViewTransform;
+
+	float nearPlane;
 };

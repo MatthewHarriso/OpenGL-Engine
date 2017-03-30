@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-#define AMBIENT_LIGHT 0.0f
+#define AMBIENT_LIGHT 0.33f
 
 ShaderManager* ShaderManager::instance = nullptr;
 
@@ -52,6 +52,11 @@ void ShaderManager::SetCamera(FlyCamera * l_camera)
 	myCamera = l_camera;
 }
 
+int ShaderManager::GetShaderID(int l_shaderType)
+{
+	return programIDs[l_shaderType];
+}
+
 void ShaderManager::LoadShaders()
 {
 	glEnable(GL_CULL_FACE);
@@ -68,9 +73,7 @@ void ShaderManager::LoadShaders()
 	for (std::vector<std::string>::iterator it = vShaders.begin(); it != vShaders.end(); it++)
 	{
 		const char* vsSource = (*v_it).data();
-		std::cout << vsSource << std::endl;
 		const char* fsSource = (*f_it).data();
-		std::cout << fsSource << std::endl;
 
 		int success = GL_FALSE;
 
@@ -140,6 +143,10 @@ void ShaderManager::LoadFromFile(char* l_textName)
 			fShaders.push_back(text);
 		}
 	}
+	else
+	{
+		std::cout << "File: " << l_textName << " - Is invalid." << std::endl;
+	}
 
 	file.close();
 	text.clear();
@@ -186,7 +193,7 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 	int location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "projectionViewWorldMatrix");
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(myCamera->GetProjectionView()));
 	
-	light = glm::vec3(sin(glfwGetTime()), 1, cos(glfwGetTime()));
+	light = glm::vec3(sin(glfwGetTime()), 0, cos(glfwGetTime()));
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "LightDir");
 	glUniform3f(location, light.x, light.y, light.z);
@@ -198,7 +205,7 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 	glUniform3f(location, 1, 1, 1);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpecPow");
-	glUniform1f(location, 25.0f);
+	glUniform1f(location, 125.0f);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "roughness");
 	glUniform1f(location, 0);
@@ -209,18 +216,36 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "lightType");
 	glUniform1i(location, eLight);
 
-	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "diffuse");
-	glUniform1i(location, 0);
+	if (l_textureIndexes[0] != -1)
+	{
+		location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "diffuse");
+		glUniform1i(location, 0);
+	}
+	else
+	{
+		location = glGetUniformLocation(0, "diffuse");
+		glUniform1i(location, 0);
+	}
 
 	if (l_textureIndexes[1] != -1)
 	{
 		location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "normal");
 		glUniform1i(location, 1);
 	}
+	else
+	{
+		location = glGetUniformLocation(0, "normal");
+		glUniform1i(location, 1);
+	}
 
 	if (l_textureIndexes[2] != -1)
 	{
 		location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "specular");
+		glUniform1i(location, 2);
+	}
+	else
+	{
+		location = glGetUniformLocation(0, "specular");
 		glUniform1i(location, 2);
 	}
 

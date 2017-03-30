@@ -28,6 +28,8 @@ public:
 	void ShutDown();
 
 	void SetCamera(FlyCamera* l_camera);
+	
+	int GetShaderID(int l_shaderType);
 
 	void LoadShaders();
 

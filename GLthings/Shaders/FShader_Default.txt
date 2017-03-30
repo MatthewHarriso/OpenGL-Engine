@@ -1,10 +1,10 @@
 #version 410
 
 in vec2 vTexCoord;
-in vec3 vNormal;
 in vec3 vTangent;
 in vec3 vBiTangent;
 in vec4 vPosition;
+in vec4 vNormal;
 
 out vec4 fragColor;
 
@@ -32,7 +32,7 @@ void main()
 	vec3 E = normalize(CameraPos - vPosition.xyz);
 	vec3 R = reflect(-LightDir, vNormal.xyz);
 	
-	float NdL = max( 0.0f, dot(N, LightDir));
+	float NdL = max( 0.0f, dot(N, R));
 	float NdE = max( 0.0f, dot(N, E));
 	
 	float R2 = roughness * roughness;
@@ -51,7 +51,8 @@ void main()
 	
 	float OrenNayar = NdL * (A + B * CX * DX);
 	
-	float s = pow( min(0, dot(E, R)), SpecPow);
+	float s = max(0, dot(E, R));
+	s = pow(s, SpecPow);
 	
 	if (s <= AmbientLight)
 	{

@@ -13,13 +13,15 @@ public:
 
 	~PostProcessing();
 
+	void Create();
+
 	void SetCamera(FlyCamera* l_camera);
 
 	void Update(float l_deltaTime);
 
 	void Draw();
 
-	void DrawPostProcessing(OpenGLInfo l_openGLInfo);
+	void DrawPostProcessing(unsigned int l_programID);
 
 private:
 
@@ -30,6 +32,8 @@ private:
 	unsigned int m_fbo;
 	unsigned int m_fboDepth;
 	unsigned int m_fboTexture;
+
+	OpenGLInfo tempArray;
 
 	FlyCamera* m_camera;
 };

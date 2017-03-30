@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
+#include "PostProcessing.h"
 #include "Object.h"
 #include "Structures.h"
 
@@ -23,7 +24,7 @@ Renderer::Renderer()
 
 	shaderManager = ShaderManager::GetInstance();
 
-	//textureManager = TextureManager::GetInstance();
+	postProcessing = PostProcessing::GetInstance();
 }
 
 Renderer::~Renderer()
@@ -50,7 +51,7 @@ void Renderer::AddToQueue(Object* l_newObject)
 		if (l_newObject->GetShader() == models.find(0)->second->GetShader())
 		{
 			//	Safety check to make sure that there is more then one object shaderID in the map.
-			if ((&models.find(indexDifference + 1)) != nullptr)
+			if ((&models.find(indexDifference + 1)) != nullptr && indexDifference + 1 < models.size())
 			{
 				//	If the shaderID is the same then we need to add the object to after the last object added with the same shaderID.
 				//	Increase the difference between the first object with the same shaderID to the next object with another shaderID.
@@ -103,14 +104,27 @@ void Renderer::Update(float l_deltaTime)
 	//
 	//	I think this should be changed to sending the shaderManager Update an int of which shaderID is being used and then update the necessary values inside the update with a switch.
 	//
+
+	postProcessing->Update(l_deltaTime);
 }
 
 void Renderer::Draw()
 {
+	postProcessing->Draw();
+	
 	//	Goes through each object in the map and draws them to the screen.
 	for (int i = 0; i < bufferIndex; i++)
 	{
 		currentObject = i;
 		shaderManager->Draw((*models.find(currentObject)).second->GetOpenGLInfo(), (*models.find(currentObject)).second->GetTexture());
 	}
+
+	postProcessing->DrawPostProcessing(shaderManager->GetShaderID(ShaderType::ShaderType_POSTPROCESSING));
+	/*
+	for (int i = 0; i < bufferIndex; i++)
+	{
+		currentObject = i;
+		shaderManager->Draw((*models.find(currentObject)).second->GetOpenGLInfo(), (*models.find(currentObject)).second->GetTexture());
+	}
+	*/
 }

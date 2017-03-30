@@ -4,9 +4,60 @@ in vec2 vTexCoord;
 
 out vec4 fragColour;
 
-uniform sampler2D diffuse;
+uniform sampler2D screenTexture;
+
+vec4 Simple()
+{
+	return texture(screenTexture, vTexCoord);
+}
+
+vec4 Sharpen()
+{
+	vec2 texelSize = 1.0f / textureSize(screenTexture, 0).xy;
+	
+	vec4 colour = texture(screenTexture, vTexCoord) * (11 / 3);
+	
+	colour += texture(screenTexture, vTexCoord + vec2(0, texelSize.y)) * (-2 / 3);
+	colour += texture(screenTexture, vTexCoord - vec2(0, texelSize.y)) * (-2 / 3);
+	colour += texture(screenTexture, vTexCoord + vec2(texelSize.x, 0)) * (-2 / 3);
+	colour += texture(screenTexture, vTexCoord - vec2(texelSize.x, 0)) * (-2 / 3);
+	
+	return colour;
+}
+
+vec4 BoxBlur()
+{
+	vec2 texel = 1.0f / textureSize(screenTexture, 0).xy;
+	
+	vec4 colour = texture(screenTexture, vTexCoord);
+	colour += texture(screenTexture, vTexCoord + vec2(-texel.x, texel.y));
+	colour += texture(screenTexture, vTexCoord + vec2(-texel.x, 0));
+	colour += texture(screenTexture, vTexCoord + vec2(-texel.x, -texel.y));
+	colour += texture(screenTexture, vTexCoord + vec2(0, texel.y));
+	colour += texture(screenTexture, vTexCoord + vec2(0, -texel.y));
+	colour += texture(screenTexture, vTexCoord + vec2(texel.x, texel.y));
+	colour += texture(screenTexture, vTexCoord + vec2(texel.x, 0));
+	colour += texture(screenTexture, vTexCoord + vec2(texel.x, -texel.y));
+	
+	return colour / 9;
+}
+
+vec4 Distort()
+{
+	vec2 mid = vec2(0.5f);
+	
+	float distanceFromCentre = distance(vTexCoord, mid);
+	vec2 normalizedCoord = normalize(vTexCoord - mid);
+	float bias = distanceFromCentre + sin(distanceFromCentre * 15) * 0.02f;
+	
+	vec2 newCoord = mid + bias * normalizedCoord;
+	
+	return texture(screenTexture, newCoord);
+}
 
 void main()
 {
-	fragColour = texture(diffuse,vTexCoord);
+	vec2 texelSize = 1.0f / textureSize(screenTexture, 0).xy;
+
+	fragColour = Simple();
 }

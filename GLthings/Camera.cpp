@@ -20,6 +20,8 @@ Camera::~Camera()
 
 void Camera::SetPerspective(float l_fieldOfView, float l_aspectRatio, float l_near, float l_far)
 {
+	nearPlane = l_near;
+
 	projectionTransform = glm::perspective(l_fieldOfView, l_aspectRatio, l_near, l_far);
 
 	UpdateProjectionViewTransform();
@@ -84,6 +86,11 @@ glm::mat4 Camera::GetProjection()
 glm::mat4 Camera::GetProjectionView()
 {
 	return projectionViewTransform;
+}
+
+float Camera::GetNearPlane()
+{
+	return nearPlane;
 }
 
 void Camera::UpdateProjectionViewTransform()
