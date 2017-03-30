@@ -1,0 +1,14 @@
+#version 410
+
+in vec vNormal;
+
+out vec4 fragColour;
+
+uniform vec3 LightDir;
+
+void main()
+{
+	float d = max(0, dot(normalize(vNormal.xyz), LightDir));
+
+	fragColour = vec4(d,d,d,1);
+}

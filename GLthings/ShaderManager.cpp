@@ -176,18 +176,33 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 	glUseProgram(programIDs[l_openGLInfo.m_ProgramID]);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, l_textureIndexes[0]);
-
-	if (l_textureIndexes[1] != -1)
+	if (l_textureIndexes[0] != -1)
 	{
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, l_textureIndexes[1]);
+		glBindTexture(GL_TEXTURE_2D, l_textureIndexes[0]);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	glActiveTexture(GL_TEXTURE1);
+	if (l_textureIndexes[1] != -1)
+	{
+		glBindTexture(GL_TEXTURE_2D, l_textureIndexes[1]);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	glActiveTexture(GL_TEXTURE2);
 	if (l_textureIndexes[2] != -1)
 	{
-		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, l_textureIndexes[2]);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	int location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "projectionViewWorldMatrix");
@@ -221,31 +236,16 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 		location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "diffuse");
 		glUniform1i(location, 0);
 	}
-	else
-	{
-		location = glGetUniformLocation(0, "diffuse");
-		glUniform1i(location, 0);
-	}
 
 	if (l_textureIndexes[1] != -1)
 	{
 		location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "normal");
 		glUniform1i(location, 1);
 	}
-	else
-	{
-		location = glGetUniformLocation(0, "normal");
-		glUniform1i(location, 1);
-	}
 
 	if (l_textureIndexes[2] != -1)
 	{
 		location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "specular");
-		glUniform1i(location, 2);
-	}
-	else
-	{
-		location = glGetUniformLocation(0, "specular");
 		glUniform1i(location, 2);
 	}
 
