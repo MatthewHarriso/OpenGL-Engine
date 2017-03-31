@@ -4,7 +4,8 @@
 #include <fstream>
 #include <sstream>
 
-#define AMBIENT_LIGHT 0.33f
+#define AMBIENT_LIGHT 0.25f
+#define PI 3.141592654f
 
 ShaderManager* ShaderManager::instance = nullptr;
 
@@ -230,6 +231,26 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "lightType");
 	glUniform1i(location, eLight);
+
+	//
+	//	SpotLightAngle is in radians.
+	//
+	//	1 = 57 degrees.
+	//
+	//	360 degrees = 2PI;
+	//
+
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightAngle");
+	glUniform1f(location, PI * 0.33f);
+
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightFalloff");
+	glUniform1f(location, PI * 0.05f);
+
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightCutoff");
+	glUniform3f(location, 10.0f);
+
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightPos");
+	glUniform3f(location, glm::vec3(, , ));
 
 	if (l_textureIndexes[0] != -1)
 	{

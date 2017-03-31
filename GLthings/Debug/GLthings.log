@@ -1,3 +1,2 @@
-﻿  Application.cpp
-c:\users\s171461\documents\visual studio 2015\projects\glthings\glthings\application.cpp(270): warning C4018: '<': signed/unsigned mismatch
+﻿  ShaderManager.cpp
   GLthings.vcxproj -> C:\Users\s171461\documents\visual studio 2015\Projects\GLthings\Debug\GLthings.exe

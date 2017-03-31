@@ -64,13 +64,13 @@ void PostProcessing::Create()
 
 	float vertexData[] = 
 	{ 
-		-1, -1, 0, 1, halfTexel.x, halfTexel.y,
-		1, 1, 0, 1, 1 - halfTexel.x, 1 - halfTexel.y,
-		-1, 1, 0, 1, halfTexel.x, 1 - halfTexel.y,
+		-1.1, -1.1, 0, 1, halfTexel.x, halfTexel.y,
+		1.1, 1.1, 0, 1, 1 - halfTexel.x, 1 - halfTexel.y,
+		-1.1, 1.1, 0, 1, halfTexel.x, 1 - halfTexel.y,
 
-		-1, -1, 0, 1, halfTexel.x, halfTexel.y,
-		1, -1, 0, 1, 1 - halfTexel.x, halfTexel.y,
-		1, 1, 0, 1, 1 - halfTexel.x, 1 - halfTexel.y,
+		-1.1, -1.1, 0, 1, halfTexel.x, halfTexel.y,
+		1.1, -1.1, 0, 1, 1 - halfTexel.x, halfTexel.y,
+		1.1, 1.1, 0, 1, 1 - halfTexel.x, 1 - halfTexel.y,
 	};
 
 	//unsigned int indexData[] = { 0, 1, 2, 0, 2, 3, };

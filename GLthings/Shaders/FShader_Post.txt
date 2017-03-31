@@ -11,33 +11,33 @@ vec4 Simple()
 	return texture(screenTexture, vTexCoord);
 }
 
-vec4 Sharpen()
+vec4 Sharpen(vec2 a_DistortCoords = vTexCoord)
 {
 	vec2 texelSize = 1.0f / textureSize(screenTexture, 0).xy;
 	
-	vec4 colour = texture(screenTexture, vTexCoord) * (11 / 3);
+	vec4 colour = texture(screenTexture, a_DistortCoords) * (11 / 3);
 	
-	colour += texture(screenTexture, vTexCoord + vec2(0, texelSize.y)) * (-2 / 3);
-	colour += texture(screenTexture, vTexCoord - vec2(0, texelSize.y)) * (-2 / 3);
-	colour += texture(screenTexture, vTexCoord + vec2(texelSize.x, 0)) * (-2 / 3);
-	colour += texture(screenTexture, vTexCoord - vec2(texelSize.x, 0)) * (-2 / 3);
+	colour += texture(screenTexture, a_DistortCoords + vec2(0, texelSize.y)) * (-2 / 3);
+	colour += texture(screenTexture, a_DistortCoords - vec2(0, texelSize.y)) * (-2 / 3);
+	colour += texture(screenTexture, a_DistortCoords + vec2(texelSize.x, 0)) * (-2 / 3);
+	colour += texture(screenTexture, a_DistortCoords - vec2(texelSize.x, 0)) * (-2 / 3);
 	
 	return colour;
 }
 
-vec4 BoxBlur()
+vec4 BoxBlur(vec2 a_DistortCoords = vTexCoord)
 {
 	vec2 texel = 1.0f / textureSize(screenTexture, 0).xy;
 	
-	vec4 colour = texture(screenTexture, vTexCoord);
-	colour += texture(screenTexture, vTexCoord + vec2(-texel.x, texel.y));
-	colour += texture(screenTexture, vTexCoord + vec2(-texel.x, 0));
-	colour += texture(screenTexture, vTexCoord + vec2(-texel.x, -texel.y));
-	colour += texture(screenTexture, vTexCoord + vec2(0, texel.y));
-	colour += texture(screenTexture, vTexCoord + vec2(0, -texel.y));
-	colour += texture(screenTexture, vTexCoord + vec2(texel.x, texel.y));
-	colour += texture(screenTexture, vTexCoord + vec2(texel.x, 0));
-	colour += texture(screenTexture, vTexCoord + vec2(texel.x, -texel.y));
+	vec4 colour = texture(screenTexture, a_DistortCoords);
+	colour += texture(screenTexture, a_DistortCoords + vec2(-texel.x, texel.y));
+	colour += texture(screenTexture, a_DistortCoords + vec2(-texel.x, 0));
+	colour += texture(screenTexture, a_DistortCoords + vec2(-texel.x, -texel.y));
+	colour += texture(screenTexture, a_DistortCoords + vec2(0, texel.y));
+	colour += texture(screenTexture, a_DistortCoords + vec2(0, -texel.y));
+	colour += texture(screenTexture, a_DistortCoords + vec2(texel.x, texel.y));
+	colour += texture(screenTexture, a_DistortCoords + vec2(texel.x, 0));
+	colour += texture(screenTexture, a_DistortCoords + vec2(texel.x, -texel.y));
 	
 	return colour / 9;
 }
@@ -52,12 +52,10 @@ vec4 Distort()
 	
 	vec2 newCoord = mid + bias * normalizedCoord;
 	
-	return texture(screenTexture, newCoord);
+	return Sharpen(newCoord);
 }
 
 void main()
 {
-	vec2 texelSize = 1.0f / textureSize(screenTexture, 0).xy;
-
-	fragColour = Simple();
+	fragColour = Distort();
 }
