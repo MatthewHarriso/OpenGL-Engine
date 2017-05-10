@@ -24,6 +24,8 @@ public:
 	void SetScreen(GLFWwindow* l_window);
 
 	glm::vec3 GetPosition();
+	glm::vec3 GetForward();
+
 	glm::mat4 GetWorldTransform();
 	glm::mat4 GetView();
 	glm::mat4 GetProjection();

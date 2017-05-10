@@ -68,6 +68,11 @@ glm::vec3 Camera::GetPosition()
 	return glm::vec3(worldTransform[3]);
 }
 
+glm::vec3 Camera::GetForward()
+{
+	return glm::vec3(worldTransform[2]);
+}
+
 glm::mat4 Camera::GetWorldTransform()
 {
 	return worldTransform;

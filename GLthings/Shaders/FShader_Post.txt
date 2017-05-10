@@ -52,7 +52,7 @@ vec4 Distort()
 	
 	vec2 newCoord = mid + bias * normalizedCoord;
 	
-	return Sharpen(newCoord);
+	return Sharpen(newCoord) * BoxBlur(newCoord);
 }
 
 void main()

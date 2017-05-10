@@ -1,2 +1,4 @@
-﻿  ShaderManager.cpp
-  GLthings.vcxproj -> C:\Users\s171461\documents\visual studio 2015\Projects\GLthings\Debug\GLthings.exe
+﻿  Server.cpp
+c:\users\ihackeddeath\documents\opengl-engine\glthings\server.cpp(156): warning C4800: 'unsigned char *': forcing value to bool 'true' or 'false' (performance warning)
+  GLthings.vcxproj -> C:\Users\IHackedDeath\Documents\OpenGL-Engine\Debug\GLthings.exe
+  GLthings.vcxproj -> C:\Users\IHackedDeath\Documents\OpenGL-Engine\Debug\GLthings.pdb (Full PDB)

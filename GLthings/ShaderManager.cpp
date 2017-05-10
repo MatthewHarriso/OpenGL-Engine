@@ -241,16 +241,19 @@ void ShaderManager::Draw(std::vector<OpenGLInfo>* l_vecOpenGLInfo, int l_texture
 	//
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightAngle");
-	glUniform1f(location, PI * 0.33f);
-
-	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightFalloff");
 	glUniform1f(location, PI * 0.05f);
 
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightFalloff");
+	glUniform1f(location, PI * 0.02f);
+
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightCutoff");
-	glUniform3f(location, 10.0f);
+	glUniform1f(location, 200.0f);
 
 	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightPos");
-	glUniform3f(location, glm::vec3(, , ));
+	glUniform3f(location, myCamera->GetPosition().x, myCamera->GetPosition().y, myCamera->GetPosition().z);
+
+	location = glGetUniformLocation(programIDs[l_openGLInfo.m_ProgramID], "SpotLightDir");
+	glUniform3f(location, myCamera->GetForward().x, myCamera->GetForward().y, myCamera->GetForward().z);
 
 	if (l_textureIndexes[0] != -1)
 	{

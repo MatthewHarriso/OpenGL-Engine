@@ -50,15 +50,15 @@ float DirectionalLight()
 
 float SpotLight()
 {
-	if (acos(dot(normalize(SpotLightPos - vTexCoord), SpotLightDir)) < SpotLightAngle))
+	if (acos(dot(normalize(SpotLightPos.xyz - vPosition.xyz), SpotLightDir.xyz)) < SpotLightAngle)
 	{
 		mat3 TBN = mat3 (normalize(vTangent), normalize(vBiTangent), normalize(vNormal));
 		vec3 N = texture(normal, vTexCoord).xyz * 2 - 1;
 		
-		float d = max(0, dot(normalize(TBN * N), normalize(SpotLightPos - vPosition)));
+		float d = max(0, dot(normalize(TBN * N), normalize(SpotLightPos.xyz - vPosition.xyz)));
 		
 		vec3 E = normalize(CameraPos - vPosition.xyz);
-		vec3 R = reflect(-SpotLightPos, vNormal.xyz);
+		vec3 R = reflect(-SpotLightPos.xyz, vNormal.xyz);
 		
 		float s = max(0, dot(E, R));
 		s = pow(s, SpecPow);
@@ -68,7 +68,8 @@ float SpotLight()
 			s = AmbientLight;
 		}
 		
-		if (acos(dot(normalize(SpotLightPos - vTexCoord), SpotLightDir)) < SpotLightAngle + SpotLightFalloff))
+		if (acos(dot(normalize(SpotLightPos.xyz - vPosition.xyz), SpotLightDir.xyz)) < SpotLightAngle + SpotLightFalloff)
+		{
 			s = s * 0.5f;
 		}
 		
@@ -109,5 +110,5 @@ float OrenNayarCalc()
 void main()
 {	
 	fragColor = texture(diffuse, vTexCoord);
-	fragColor *= vec4(LightColour * OrenNayarCalc() + LightColour * directionalLight(), 1);
+	fragColor *= vec4(LightColour * OrenNayarCalc() + LightColour * DirectionalLight(), 1);
 }
